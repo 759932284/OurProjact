@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.bean.RecommondResponse;
+import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
 
 import java.util.List;
 
@@ -19,9 +21,9 @@ import java.util.List;
 public class HomeRecommondRecommondAdapter extends RecyclerView.Adapter<HomeRecommondRecommondAdapter.HomeRecommondRecommondViewHolder> {
 
     private Context context;
-    private List<String> dataRecommond;
+    private List<RecommondResponse> dataRecommond;
 
-    public void setDataRecommond(List<String> dataRecommond) {
+    public void setDataRecommond(List<RecommondResponse> dataRecommond) {
         this.dataRecommond = dataRecommond;
         notifyDataSetChanged();
     }
@@ -39,8 +41,10 @@ public class HomeRecommondRecommondAdapter extends RecyclerView.Adapter<HomeReco
 
     @Override
     public void onBindViewHolder(HomeRecommondRecommondViewHolder holder, int position) {
-        holder.recommondTiltleTv.setText(dataRecommond.get(position));
-        holder.recommondAuthorTv.setText(dataRecommond.get(position));
+        holder.recommondTiltleTv.setText(dataRecommond.get(position).getTitle());
+        holder.recommondAuthorTv.setText(dataRecommond.get(position).getChannelName());
+        ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
+                dataRecommond.get(position).getCover(), holder.recommondIv);
     }
 
     @Override

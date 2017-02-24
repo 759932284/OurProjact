@@ -12,18 +12,36 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.bean.AlbumResponse;
+import com.lanou.yindongge.music.pineapple.bean.BacteriaResponse;
+import com.lanou.yindongge.music.pineapple.bean.GameTalkResponse;
+import com.lanou.yindongge.music.pineapple.bean.PopularResponse;
+import com.lanou.yindongge.music.pineapple.bean.RecommondResponse;
+import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
+import com.lanou.yindongge.music.pineapple.net.OkHttpManager;
+import com.lanou.yindongge.music.pineapple.net.OnNetResultListener;
+import com.lanou.yindongge.music.pineapple.util.Contant;
 
-import java.util.ArrayList;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
  * Created by dllo on 17/2/18.
  */
 
-public class HomeRecommondAdapter extends RecyclerView.Adapter {
+public class HomeRecommondAdapter extends RecyclerView.Adapter implements OnNetResultListener{
     private Context context;
+    private HomeRecommondBacteriaAdapter bacteriaAdapter;
+    private HomeRecommondPopularAdapter popularAdapter;
+    private HomeRecommondGameAdapter gameAdapter;
+    private HomeRecommondAlbumAdapter albumAdapter;
+    private HomeRecommondAlbumViewHolder holderAlbum;
+    private HomeRecommondRecommondAdapter recommondAdapter;
 
     public HomeRecommondAdapter(Context context) {
         this.context = context;
@@ -130,12 +148,8 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter {
             case 1:
                 HomeRecommondBacteriaViewHolder holderBacteria = (HomeRecommondBacteriaViewHolder)holder;
                 holderBacteria.bacteriaTv.setText("菠萝菌力荐");
-                HomeRecommondBacteriaAdapter bacteriaAdapter = new HomeRecommondBacteriaAdapter(context);
-                List<String> data =  new ArrayList<>();
-                for (int i = 0; i < 6; i++) {
-                    data.add("题目");
-                }
-                bacteriaAdapter.setData(data);
+                bacteriaAdapter = new HomeRecommondBacteriaAdapter(context);
+                OkHttpManager.getInstance().startGetRequest(Contant.BACTERIA, Contant.BACTERIA_REQUESTCODE, this);
                 holderBacteria.bacteriaRv.setLayoutManager(new GridLayoutManager(context, 2,
                                                           LinearLayoutManager.VERTICAL, false));
                 holderBacteria.bacteriaRv.setAdapter(bacteriaAdapter);
@@ -143,12 +157,9 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter {
             case 2:
                 HomeRecommondPopularViewHolder holderPopular = (HomeRecommondPopularViewHolder)holder;
                 holderPopular.popularTv.setText("人气周榜");
-                HomeRecommondPopularAdapter popularAdapter = new HomeRecommondPopularAdapter(context);
-                List<String> dataPopular = new ArrayList<>();
-                for (int i = 0; i < 9; i++) {
-                    dataPopular.add("题目");
-                }
-                popularAdapter.setDataPopular(dataPopular);
+                popularAdapter = new HomeRecommondPopularAdapter(context);
+                // 获取人气榜网络数据
+                OkHttpManager.getInstance().startGetRequest(Contant.POPULAR, Contant.POPULAR_REQUESTCODE, this);
                 holderPopular.popularRv.setLayoutManager(new GridLayoutManager(context, 3,
                                                          LinearLayoutManager.HORIZONTAL, false));
                 holderPopular.popularRv.setAdapter(popularAdapter);
@@ -157,14 +168,9 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter {
                 View gameHeaderView = LayoutInflater.from(context).inflate(R.layout.item_home_header, null);
                 HomeRecommondGameViewHolder holderGame = (HomeRecommondGameViewHolder)holder;
                 holderGame.gameTv.setText("游戏杂谈...");
-                final HomeRecommondGameAdapter gameAdapter = new HomeRecommondGameAdapter(context, gameHeaderView);
-                List<String> dataGame =  new ArrayList<>();
-                for (int i = 0; i < 5; i++) {
-                    dataGame.add("题目");
-                }
-                gameAdapter.setDataGame(dataGame);
-//                holderGame.gameRv.setLayoutManager(new GridLayoutManager(context, 2,
-//                                                         LinearLayoutManager.VERTICAL, false));
+                gameAdapter = new HomeRecommondGameAdapter(context, gameHeaderView);
+                // 获取人气榜网络数据
+                OkHttpManager.getInstance().startGetRequest(Contant.GAME_TALK, Contant.GAME_TALK_REQUESTCODE, this);
                 GridLayoutManager gameManager = new GridLayoutManager(context, 2);
                 gameManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
@@ -176,16 +182,12 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter {
                 holderGame.gameRv.setAdapter(gameAdapter);
                 break;
             case 4:
-                HomeRecommondAlbumViewHolder holderAlbum = (HomeRecommondAlbumViewHolder)holder;
+                holderAlbum = (HomeRecommondAlbumViewHolder)holder;
                 holderAlbum.albumTv.setText("菠萝专辑");
                 // 获取网络图片后,用解析工具铺建
-                holderAlbum.albumIv.setImageResource(R.mipmap.ic_launcher);
-                HomeRecommondAlbumAdapter albumAdapter = new HomeRecommondAlbumAdapter(context);
-                List<String> dataAlbum = new ArrayList<>();
-                for (int i = 0; i < 7; i++) {
-                    dataAlbum.add("专辑");
-                }
-                albumAdapter.setDataAlbum(dataAlbum);
+              //  holderAlbum.albumIv.setImageResource(R.mipmap.ic_launcher);
+                albumAdapter = new HomeRecommondAlbumAdapter(context);
+                OkHttpManager.getInstance().startGetRequest(Contant.ALBUM, Contant.ALBUM_REQUESTCODE, this);
                 holderAlbum.albumRv.setLayoutManager(new LinearLayoutManager(context,
                                                         LinearLayoutManager.HORIZONTAL, false));
                 holderAlbum.albumRv.setAdapter(albumAdapter);
@@ -193,12 +195,8 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter {
             case 5:
                 HomeRecommondRecommondHolder holderRecommond = (HomeRecommondRecommondHolder)holder;
                 holderRecommond.recommondTv.setText("为您推荐");
-                HomeRecommondRecommondAdapter recommondAdapter = new HomeRecommondRecommondAdapter(context);
-                List<String> dataRecommond = new ArrayList<>();
-                for (int i = 0; i < 20; i++) {
-                    dataRecommond.add("推荐");
-                }
-                recommondAdapter.setDataRecommond(dataRecommond);
+                recommondAdapter = new HomeRecommondRecommondAdapter(context);
+                OkHttpManager.getInstance().startGetRequest(Contant.RECOMMOND, Contant.RECOMMOND_REQUESTCODE, this);
                 holderRecommond.recommondRv.setLayoutManager(new GridLayoutManager(context, 2,
                                                         LinearLayoutManager.VERTICAL, false));
                 holderRecommond.recommondRv.setAdapter(recommondAdapter);
@@ -228,6 +226,51 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return 6;
+    }
+
+    @Override
+    public void onSuccessListener(String result, int requestCode) {
+        Gson gson = new Gson();
+        // 推荐-菠萝菌力荐-解析
+        if (Contant.BACTERIA_REQUESTCODE == requestCode) {
+            Type type = new TypeToken<List<BacteriaResponse>>(){}.getType();
+            List<BacteriaResponse> dataBacteria = gson.fromJson(result, type);
+            bacteriaAdapter.setDataBacteria(dataBacteria);
+        }
+        // 推荐-人气榜-解析
+        if (Contant.POPULAR_REQUESTCODE == requestCode) {
+            Type type = new TypeToken<List<PopularResponse>>(){}.getType();
+            List<PopularResponse> dataPopular = gson.fromJson(result, type);
+            popularAdapter.setDataPopular(dataPopular);
+        }
+        // 推荐-游戏杂谈-解析
+        if (Contant.GAME_TALK_REQUESTCODE == requestCode) {
+            Type type = new TypeToken<List<GameTalkResponse>>(){}.getType();
+            List<GameTalkResponse> dataGameTalkAll = gson.fromJson(result, type);
+            List<GameTalkResponse.VideoListBean> dataGameTalk = dataGameTalkAll.get(0).getVideoList();
+            gameAdapter.setDataGameTalk(dataGameTalk);
+        }
+        // 推荐-菠萝专辑-解析
+        if (Contant.ALBUM_REQUESTCODE == requestCode) {
+            Type type = new TypeToken<List<AlbumResponse>>(){}.getType();
+            List<AlbumResponse> dataAlbumAll = gson.fromJson(result, type);
+            ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
+                    dataAlbumAll.get(0).getCover(), holderAlbum.albumIv);
+            holderAlbum.albumInnerTv.setText(dataAlbumAll.get(0).getName());
+            List<AlbumResponse.VideoListBean> dataAlbum = dataAlbumAll.get(0).getVideoList();
+            albumAdapter.setDataAlbum(dataAlbum);
+        }
+        // 推荐-为您推荐-解析
+        if (Contant.RECOMMOND_REQUESTCODE == requestCode) {
+            Type type = new TypeToken<List<RecommondResponse>>(){}.getType();
+            List<RecommondResponse> dataRecommond = gson.fromJson(result, type);
+            recommondAdapter.setDataRecommond(dataRecommond);
+        }
+    }
+
+    @Override
+    public void onFailureListener(String errMsg) {
+        Toast.makeText(context, errMsg, Toast.LENGTH_SHORT).show();
     }
 
     class HomeRecommondBacteriaViewHolder extends RecyclerView.ViewHolder {
@@ -270,11 +313,13 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter {
         TextView albumTv;
         ImageView albumIv;
         RecyclerView albumRv;
+        TextView albumInnerTv;
         public HomeRecommondAlbumViewHolder(View itemView) {
             super(itemView);
             albumTv = (TextView)itemView.findViewById(R.id.recommond_album_tv);
             albumIv = (ImageView)itemView.findViewById(R.id.recommond_album_iv);
             albumRv = (RecyclerView)itemView.findViewById(R.id.recommond_album_rv);
+            albumInnerTv = (TextView)itemView.findViewById(R.id.recommond_album_inner_tv);
         }
     }
     class HomeRecommondRecommondHolder extends RecyclerView.ViewHolder{

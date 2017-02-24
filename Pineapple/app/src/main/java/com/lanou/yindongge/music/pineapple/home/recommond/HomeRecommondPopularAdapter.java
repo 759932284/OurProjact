@@ -5,9 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.bean.PopularResponse;
+import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
 
 import java.util.List;
 
@@ -18,9 +21,9 @@ import java.util.List;
 public class HomeRecommondPopularAdapter extends RecyclerView.Adapter<HomeRecommondPopularAdapter.HomeRecommondPopularViewHolder> {
 
     private Context context;
-    private List<String> dataPopular;
+    private List<PopularResponse> dataPopular;
 
-    public void setDataPopular(List<String> dataPopular) {
+    public void setDataPopular(List<PopularResponse> dataPopular) {
         this.dataPopular = dataPopular;
         notifyDataSetChanged();
     }
@@ -39,8 +42,10 @@ public class HomeRecommondPopularAdapter extends RecyclerView.Adapter<HomeRecomm
     @Override
     public void onBindViewHolder(HomeRecommondPopularViewHolder holder, int position) {
         holder.popularOrderTv.setText(position + 1 + "");
-        holder.popularTitleTv.setText(dataPopular.get(position));
-        holder.popularNumTv.setText(dataPopular.get(position));
+        holder.popularTitleTv.setText(dataPopular.get(position).getName());
+        holder.popularNumTv.setText(dataPopular.get(position).getChannelName());
+        ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
+                dataPopular.get(position).getAvatar(), holder.popularIv);
     }
 
     @Override
@@ -49,12 +54,13 @@ public class HomeRecommondPopularAdapter extends RecyclerView.Adapter<HomeRecomm
     }
 
     class HomeRecommondPopularViewHolder extends RecyclerView.ViewHolder{
-
+        ImageView popularIv;
         TextView popularOrderTv;
         TextView popularTitleTv;
         TextView popularNumTv;
         public HomeRecommondPopularViewHolder(View itemView) {
             super(itemView);
+            popularIv = (ImageView)itemView.findViewById(R.id.popular_iv);
             popularOrderTv = (TextView)itemView.findViewById(R.id.popular_order_tv);
             popularTitleTv = (TextView)itemView.findViewById(R.id.popular_title_tv);
             popularNumTv = (TextView)itemView.findViewById(R.id.popular_number_tv);

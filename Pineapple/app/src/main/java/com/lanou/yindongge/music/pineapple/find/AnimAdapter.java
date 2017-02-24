@@ -58,7 +58,7 @@ public class AnimAdapter extends RecyclerView.Adapter {
         switch (itemViewType) {
             case 0:
                 AnimTextHolder animTextHolder = (AnimTextHolder) holder;
-                animTextHolder.text.setText("搞笑");
+                animTextHolder.text.setText(context.getResources().getString(R.string.laugh));
                 break;
             case 1:
                 AnimImageHolder animImageHolder = (AnimImageHolder) holder;
