@@ -1,11 +1,13 @@
 package com.lanou.yindongge.music.pineapple.find;
 
 import android.content.Context;
+import android.os.NetworkOnMainThreadException;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.lanou.yindongge.music.pineapple.R;
 
@@ -18,14 +20,14 @@ import java.util.List;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHolder>{
     private Context context;
 
-    private List<String> search;
+    private List<SearchBean> searchList;
 
     public SearchAdapter(Context context) {
         this.context = context;
     }
 
-    public void setSearch(List<String> search) {
-        this.search = search;
+    public void setSearchList(List<SearchBean> searchList) {
+        this.searchList = searchList;
         notifyDataSetChanged();
     }
 
@@ -38,19 +40,19 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHold
 
     @Override
     public void onBindViewHolder(SearchHolder holder, int position) {
-        holder.searchBtn.setText(search.get(position));
+        holder.searchBtn.setText(searchList.get(position).getKeyword());
     }
 
     @Override
     public int getItemCount() {
-        return 9;
+        return searchList == null ? 0 : searchList.size();
     }
 
     class SearchHolder extends RecyclerView.ViewHolder {
         Button searchBtn;
         public SearchHolder(View itemView) {
             super(itemView);
-            searchBtn = (Button) itemView.findViewById(R.id.search_btn);
+            searchBtn = (Button) itemView.findViewById(R.id.search_Btn);
         }
     }
 }

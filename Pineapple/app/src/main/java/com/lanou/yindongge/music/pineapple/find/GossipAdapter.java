@@ -3,13 +3,20 @@ package com.lanou.yindongge.music.pineapple.find;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.net.OkHttpManager;
+import com.lanou.yindongge.music.pineapple.net.OnNetResultListener;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,82 +24,46 @@ import java.util.List;
  * Created by dllo on 17/2/22.
  */
 
-public class GossipAdapter extends RecyclerView.Adapter {
+public class GossipAdapter extends RecyclerView.Adapter<GossipAdapter.GossipImageViewHolder> {
     private Context context;
+
+    private List<ZoneListBean.VideoSetListBean> gossipData;
 
     public GossipAdapter(Context context) {
         this.context = context;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        switch (position) {
-            case 0:
-                return 0;
-            case 1:
-                return 1;
-        }
-        return 0;
+    public void setGossipData(List<ZoneListBean.VideoSetListBean> gossipData) {
+        this.gossipData = gossipData;
+        notifyDataSetChanged();
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder holder = null;
-        View itemView;
-        switch (viewType) {
-            case 0:
-                itemView = LayoutInflater.from(context).inflate(R.layout.item_gossip_text, parent, false);
-                holder = new GossipTextHolder(itemView);
-                break;
-            case 1:
-                itemView = LayoutInflater.from(context).inflate(R.layout.item_gossip, parent, false);
-                holder = new GossipImageHolder(itemView);
-                break;
-        }
+    public GossipImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_gossip_image, null);
+        GossipImageViewHolder holder = new GossipImageViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        int itemViewType = getItemViewType(position);
-        switch (itemViewType) {
-            case 0:
-                GossipTextHolder gossipTextHolder = (GossipTextHolder) holder;
-                gossipTextHolder.text.setText("游戏杂谈");
-                break;
-            case 1:
-                GossipImageHolder gossipImageHolder = (GossipImageHolder) holder;
-                GossipImageAdapter gossipImageAdapter = new GossipImageAdapter(context);
-                List<String> datas = new ArrayList<>();
-                for (int i = 0; i < 8; i++) {
-                    datas.add("文字" + i);
-                }
-                gossipImageAdapter.setData(datas);
-                gossipImageHolder.rv.setLayoutManager(new LinearLayoutManager
-                        (context, LinearLayoutManager.HORIZONTAL, false));
-                gossipImageHolder.rv.setAdapter(gossipImageAdapter);
-                break;
-        }
-
+    public void onBindViewHolder(GossipImageViewHolder holder, int position) {
+        holder.gossipTv.setText(gossipData.get(position).getName());
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return gossipData != null ? gossipData.size() : 0;
     }
 
-    class GossipTextHolder extends RecyclerView.ViewHolder {
-        TextView text;
-        public GossipTextHolder(View itemView) {
+    class GossipImageViewHolder extends RecyclerView.ViewHolder {
+        ImageView gossipIv;
+        TextView gossipTv;
+        public GossipImageViewHolder(View itemView) {
             super(itemView);
-            text = (TextView) itemView.findViewById(R.id.gossip_text_text);
+            gossipIv =  (ImageView)itemView.findViewById(R.id.gossip_image_image);
+            gossipTv = (TextView)itemView.findViewById(R.id.gossip_image_text);
         }
     }
-    class GossipImageHolder extends RecyclerView.ViewHolder {
-        RecyclerView rv;
-        public GossipImageHolder(View itemView) {
-            super(itemView);
-            rv = (RecyclerView) itemView.findViewById(R.id.gossip_rv);
-        }
-    }
+
+
 }
