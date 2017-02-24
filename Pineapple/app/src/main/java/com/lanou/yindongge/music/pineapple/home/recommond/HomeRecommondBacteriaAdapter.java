@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.bean.BacteriaResponse;
+import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
 
 import java.util.List;
 
@@ -19,10 +21,10 @@ import java.util.List;
 public class HomeRecommondBacteriaAdapter extends RecyclerView.Adapter<HomeRecommondBacteriaAdapter.BacteriaViewHolder> {
 
     private Context context;
-    private List<String> data;
+    private List<BacteriaResponse> dataBacteria;
 
-    public void setData(List<String> data) {
-        this.data = data;
+    public void setDataBacteria(List<BacteriaResponse> dataBacteria) {
+        this.dataBacteria = dataBacteria;
         notifyDataSetChanged();
     }
 
@@ -39,13 +41,15 @@ public class HomeRecommondBacteriaAdapter extends RecyclerView.Adapter<HomeRecom
 
     @Override
     public void onBindViewHolder(BacteriaViewHolder holder, int position) {
-        holder.bacteriaTitleTv.setText(data.get(position));
-        holder.bacteriaAuthorTv.setText(data.get(position));
+        holder.bacteriaTitleTv.setText(dataBacteria.get(position).getTitle());
+        holder.bacteriaAuthorTv.setText(dataBacteria.get(position).getChannelName());
+        ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
+                dataBacteria.get(position).getAvatar(), holder.bacteriaIv);
     }
 
     @Override
     public int getItemCount() {
-        return data != null ? data.size() : 0;
+        return dataBacteria != null ? dataBacteria.size() : 0;
     }
 
     class BacteriaViewHolder extends RecyclerView.ViewHolder{

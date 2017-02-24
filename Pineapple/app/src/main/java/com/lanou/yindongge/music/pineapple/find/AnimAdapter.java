@@ -32,6 +32,7 @@ public class AnimAdapter extends RecyclerView.Adapter<AnimAdapter.AnimImageHolde
         notifyDataSetChanged();
     }
 
+
     @Override
     public AnimImageHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(context).inflate(R.layout.item_gossip_image, null);

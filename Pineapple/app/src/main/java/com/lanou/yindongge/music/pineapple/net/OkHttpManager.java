@@ -36,19 +36,19 @@ public class OkHttpManager {
         handler = new Handler();
     }
 
-    private void _startGetRequest(final String url, final OnNetResultListener listener) {
+    private void _startGetRequest(final String url, final int requestCode, final OnNetResultListener listener) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Request request = new Request.Builder()
                         .url(url)
                         .build();
-                creatCall(request, listener);
+                creatCall(request, requestCode, listener);
 
             }
         }).start();
     }
-    private void creatCall(Request request, final OnNetResultListener listener) {
+    private void creatCall(Request request, final int requestCode, final OnNetResultListener listener) {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -68,13 +68,13 @@ public class OkHttpManager {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        listener.onSuccessListener(result);
+                        listener.onSuccessListener(result, requestCode);
                     }
                 });
             }
         });
     }
-    public void startGetRequest(String url, OnNetResultListener listener) {
-        _startGetRequest(url, listener);
+    public void startGetRequest(String url, int requestCode, OnNetResultListener listener) {
+        _startGetRequest(url, requestCode, listener);
     }
 }

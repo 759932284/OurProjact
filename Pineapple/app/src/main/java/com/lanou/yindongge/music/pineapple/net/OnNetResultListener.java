@@ -5,6 +5,6 @@ package com.lanou.yindongge.music.pineapple.net;
  */
 
 public interface OnNetResultListener {
-    void onSuccessListener(String result);
+    void onSuccessListener(String result, int requestCode);
     void onFailureListener(String errMsg);
 }

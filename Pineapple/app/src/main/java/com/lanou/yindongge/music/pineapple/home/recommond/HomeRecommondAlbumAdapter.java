@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.bean.AlbumResponse;
+import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
 
 import java.util.List;
 
@@ -19,9 +21,9 @@ import java.util.List;
 public class HomeRecommondAlbumAdapter extends RecyclerView.Adapter<HomeRecommondAlbumAdapter.HomeRecommondAlbumViewHolder> {
 
     private Context context;
-    private List<String> dataAlbum;
+    private List<AlbumResponse.VideoListBean> dataAlbum;
 
-    public void setDataAlbum(List<String> dataAlbum) {
+    public void setDataAlbum(List<AlbumResponse.VideoListBean> dataAlbum) {
         this.dataAlbum = dataAlbum;
         notifyDataSetChanged();
     }
@@ -39,8 +41,10 @@ public class HomeRecommondAlbumAdapter extends RecyclerView.Adapter<HomeRecommon
 
     @Override
     public void onBindViewHolder(HomeRecommondAlbumViewHolder holder, int position) {
-        holder.albumTitleTv.setText(dataAlbum.get(position));
-        holder.albumAuthorTv.setText(dataAlbum.get(position));
+        holder.albumTitleTv.setText(dataAlbum.get(position).getTitle());
+        holder.albumAuthorTv.setText(dataAlbum.get(position).getChannelName());
+        ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
+                dataAlbum.get(position).getCover(), holder.albumIv);
     }
 
     @Override

@@ -2,13 +2,15 @@ package com.lanou.yindongge.music.pineapple.home.recommond;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.bean.GameTalkResponse;
+import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
 
 import java.util.List;
 
@@ -19,10 +21,11 @@ import java.util.List;
 public class HomeRecommondGameAdapter extends RecyclerView.Adapter<HomeRecommondGameAdapter.HomeRecommondGameViewHolder> {
 
     private Context context;
-    private List<String> dataGame;
+    private List<GameTalkResponse.VideoListBean> dataGameTalk;
     private View gameHeaderView;
-    public void setDataGame(List<String> dataGame) {
-        this.dataGame = dataGame;
+
+    public void setDataGameTalk(List<GameTalkResponse.VideoListBean> dataGameTalk) {
+        this.dataGameTalk = dataGameTalk;
         notifyDataSetChanged();
     }
 
@@ -58,18 +61,21 @@ public class HomeRecommondGameAdapter extends RecyclerView.Adapter<HomeRecommond
     public void onBindViewHolder(HomeRecommondGameViewHolder holder, int position) {
 
         if (isHeader(position)) {
-            holder.gameHeaderTitleTv.setText(dataGame.get(position));
-            holder.gameHeaderAuthorTv.setText(dataGame.get(position));
-            Log.d("HomeRecommondGameAdapte", dataGame.get(position));
+            holder.gameHeaderTitleTv.setText(dataGameTalk.get(position).getTitle());
+            holder.gameHeaderAuthorTv.setText(dataGameTalk.get(position).getChannelName());
+            ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
+                    dataGameTalk.get(position).getCover(), holder.gameHeaderIv);
             return;
         }
-        holder.gameDetailTitleTv.setText(dataGame.get(position - 1));
-        holder.gameDetailAuthorTv.setText(dataGame.get(position - 1));
+        holder.gameDetailTitleTv.setText(dataGameTalk.get(position - 1).getTitle());
+        holder.gameDetailAuthorTv.setText(dataGameTalk.get(position - 1).getChannelName());
+        ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
+                dataGameTalk.get(position - 1).getAvatar(), holder.gameDetailIv);
     }
 
     @Override
     public int getItemCount() {
-        return dataGame != null ? dataGame.size() : 0 ;
+        return dataGameTalk != null ? dataGameTalk.size() : 0 ;
     }
 
     public boolean isHeader(int position) {
@@ -81,12 +87,17 @@ public class HomeRecommondGameAdapter extends RecyclerView.Adapter<HomeRecommond
         TextView gameHeaderAuthorTv;
         TextView gameDetailTitleTv;
         TextView gameDetailAuthorTv;
+        ImageView gameHeaderIv;
+        ImageView gameDetailIv;
         public HomeRecommondGameViewHolder(View itemView) {
             super(itemView);
             gameHeaderTitleTv = (TextView)itemView.findViewById(R.id.home_recommond_title_tv);
             gameHeaderAuthorTv = (TextView)itemView.findViewById(R.id.home_recommond_author_tv);
             gameDetailTitleTv = (TextView)itemView.findViewById(R.id.recommond_game_detail_title_tv);
             gameDetailAuthorTv = (TextView)itemView.findViewById(R.id.recommond_game_detail_author_tv);
+            gameHeaderIv =  (ImageView) itemView.findViewById(R.id.home_recommond_header_iv);
+            gameDetailIv =  (ImageView) itemView.findViewById(R.id.recommond_game_detail_iv);
+
         }
     }
 }
