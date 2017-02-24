@@ -21,6 +21,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void initData() {
         initClick();
+        initFirstView();
+
+    }
+
+    private void initFirstView() {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.take_place_fl, new HomeFragment());

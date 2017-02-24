@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 
 public abstract class BaseFragment extends Fragment {
     protected Context context;
+    private View view;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutId(), container, false);
+        view = inflater.inflate(getLayoutId(), container, false);
         initView(view);
         return view;
     }
@@ -32,9 +34,9 @@ public abstract class BaseFragment extends Fragment {
     public abstract void initView(View view);
     public abstract void initData();
 
-//    public <V extends View> V byView(int resId) {
-//        return (V)
-//    }
+    public <V extends View> V byView(int resId) {
+        return (V)view.findViewById(resId);
+    }
 
     @Override
     public void onAttach(Context context) {
