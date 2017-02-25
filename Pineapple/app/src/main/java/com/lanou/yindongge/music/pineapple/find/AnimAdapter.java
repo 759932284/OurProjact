@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.net.GlideManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,7 @@ public class AnimAdapter extends RecyclerView.Adapter<AnimAdapter.AnimImageHolde
     @Override
     public void onBindViewHolder(AnimImageHolder holder, int position) {
         holder.animTv.setText(animData.get(position).getName());
+        GlideManager.getGlideManager().loadImageView(context, animData.get(position).getCover(), holder.animIv);
     }
 
     @Override

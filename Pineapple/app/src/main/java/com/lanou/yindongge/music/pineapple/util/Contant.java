@@ -30,4 +30,8 @@ public class Contant {
     public static final int ALBUM_REQUESTCODE = index++;
     // 首页-推荐-为您推荐
     public static final int RECOMMOND_REQUESTCODE = index++;
+    // 发现页 搜索
+    public static final int FIND_SEARCH_REQUESTCODE = index++;
+    // 发现页内容
+    public static final int FIND_CONTENT_REQUESTCODE = index++;
 }

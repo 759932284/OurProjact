@@ -4,24 +4,14 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.lanou.yindongge.music.pineapple.R;
-import com.lanou.yindongge.music.pineapple.net.OkHttpManager;
-import com.lanou.yindongge.music.pineapple.net.OnNetResultListener;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import okhttp3.Response;
 
 /**
  * Created by dllo on 17/2/22.
@@ -30,7 +20,7 @@ import okhttp3.Response;
 public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
 
-    private List<ZoneListBean> allList;
+    private List<SearchBean> searchDatas;
     private List<ZoneListBean.VideoSetListBean> gossip;
     private List<ZoneListBean.VideoSetListBean> fun;
     private List<ZoneListBean.VideoSetListBean> anim;
@@ -42,6 +32,26 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public FindAdapter(Context context) {
         this.context = context;
+    }
+
+    public void setSearchDatas(List<SearchBean> searchDatas) {
+        this.searchDatas = searchDatas;
+        notifyDataSetChanged();
+    }
+
+    public void setGossip(List<ZoneListBean.VideoSetListBean> gossip) {
+        this.gossip = gossip;
+        notifyDataSetChanged();
+    }
+
+    public void setFun(List<ZoneListBean.VideoSetListBean> fun) {
+        this.fun = fun;
+        notifyDataSetChanged();
+    }
+
+    public void setAnim(List<ZoneListBean.VideoSetListBean> anim) {
+        this.anim = anim;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -87,46 +97,16 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         int viewType = getItemViewType(position);
-        OkHttpManager.getInstance().startGetRequest(Url.ZONELIST, new OnNetResultListener() {
-
-            @Override
-            public void onSuccessListener(String result) {
-                Gson gson = new Gson();
-                Type type = new TypeToken<List<ZoneListBean>>(){}.getType();
-                allList = gson.fromJson(result, type);
-                gossip = allList.get(0).getVideoSetList();
-                fun = allList.get(1).getVideoSetList();
-                anim = allList.get(2).getVideoSetList();
-            }
-
-            @Override
-            public void onFailureListener(String errMsg) {
-
-            }
-        });
         switch (viewType) {
             case SEARCH:
-                final SearchAdapter searchAdapter = new SearchAdapter(context);
+                SearchAdapter searchAdapter = new SearchAdapter(context);
                 SearchHolder searchHolder = (SearchHolder) holder;
-
-                OkHttpManager.getInstance().startGetRequest(Url.SEARCH, new OnNetResultListener() {
-                    @Override
-                    public void onSuccessListener(String result) {
-                        Gson gson = new Gson();
-                        Type type = new TypeToken<List<SearchBean>>(){}.getType();
-                        List<SearchBean> searchDatas = gson.fromJson(result, type);
-                        searchAdapter.setSearchList(searchDatas);
-                    }
-                    @Override
-                    public void onFailureListener(String errMsg) {
-                        Log.d("FindAdapter", errMsg + "");
-                    }
-                });
                 searchHolder.searchRv.setLayoutManager(new GridLayoutManager(context, 3));
                 searchHolder.searchRv.setAdapter(searchAdapter);
+                searchAdapter.setSearchList(searchDatas);
                 break;
             case GOSSIP:
-                final GossipAdapter gossipAdapter = new GossipAdapter(context);
+                GossipAdapter gossipAdapter = new GossipAdapter(context);
                 GossipHolder gossipHolder = (GossipHolder) holder;
                 gossipHolder.gossipTv.setText("游戏杂谈");
                 gossipHolder.gossipRv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));

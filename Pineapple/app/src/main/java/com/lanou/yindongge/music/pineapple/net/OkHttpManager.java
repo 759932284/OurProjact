@@ -48,7 +48,9 @@ public class OkHttpManager {
             }
         }).start();
     }
+
     private void creatCall(Request request, final int requestCode, final OnNetResultListener listener) {
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, final IOException e) {
@@ -74,7 +76,9 @@ public class OkHttpManager {
             }
         });
     }
+
     public void startGetRequest(String url, int requestCode, OnNetResultListener listener) {
         _startGetRequest(url, requestCode, listener);
     }
+
 }

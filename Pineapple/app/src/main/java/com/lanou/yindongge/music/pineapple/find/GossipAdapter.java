@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.net.GlideManager;
 import com.lanou.yindongge.music.pineapple.net.OkHttpManager;
 import com.lanou.yindongge.music.pineapple.net.OnNetResultListener;
 
@@ -48,6 +49,7 @@ public class GossipAdapter extends RecyclerView.Adapter<GossipAdapter.GossipImag
     @Override
     public void onBindViewHolder(GossipImageViewHolder holder, int position) {
         holder.gossipTv.setText(gossipData.get(position).getName());
+        GlideManager.getGlideManager().loadImageView(context, gossipData.get(position).getCover(), holder.gossipIv);
     }
 
     @Override

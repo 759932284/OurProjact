@@ -13,7 +13,7 @@ import android.view.WindowManager;
 
 public abstract class BaseActivity extends AppCompatActivity {
     /** 是否沉浸状态栏 **/
-    private boolean isSetStatusBar = true;
+    private boolean isSetStatusBar = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
