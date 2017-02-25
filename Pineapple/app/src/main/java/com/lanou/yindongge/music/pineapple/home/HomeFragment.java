@@ -1,5 +1,6 @@
 package com.lanou.yindongge.music.pineapple.home;
 
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -42,6 +43,7 @@ public class HomeFragment extends BaseFragment {
         viewPager.setAdapter(mainAdapter);
         mainAdapter.setTitle(title);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setSelectedTabIndicatorColor(Color.BLACK);
 
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new HomeRecommondFragment());

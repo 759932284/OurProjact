@@ -17,7 +17,7 @@ import java.util.List;
  * Created by dllo on 17/2/25.
  */
 
-public class HomeCommentAdapter extends RecyclerView.Adapter {
+public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.HomeCommentFirstViewHolder> {
     private Context context;
     private List<HomeGameTalkResponse> dataHomeGameTalk;
     private HomeCommentDetailAdapter commentDetailAdapter;
@@ -32,17 +32,19 @@ public class HomeCommentAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder holder = null;
+    public HomeCommentFirstViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_home_comment_first, null);
+        //RecyclerView.ViewHolder holder = null;
+        HomeCommentFirstViewHolder holder = new HomeCommentFirstViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-                if (dataHomeGameTalk != null) {
+    public void onBindViewHolder(HomeCommentFirstViewHolder holder, int position) {
+                if (dataHomeGameTalk != null && dataHomeGameTalk.size() > 0) {
                     View commentHeaderView = LayoutInflater.from(context).inflate(R.layout.item_home_header, null);
-                    HomeCommentFirstViewHolder holderFirst = (HomeCommentFirstViewHolder)holder;
-                    holderFirst.commentFirstTv.setText(dataHomeGameTalk.get(position).getVideoCategory().getName());
+              //      HomeCommentFirstViewHolder holderFirst = (HomeCommentFirstViewHolder)holder;
+                    holder.commentFirstTv.setText(dataHomeGameTalk.get(position).getVideoCategory().getName());
                     commentDetailAdapter = new HomeCommentDetailAdapter(context, commentHeaderView);
                     List<HomeGameTalkResponse.VideoListBean> dataDeatail = dataHomeGameTalk.get(position).getVideoList();
                     commentDetailAdapter.setDataDeatail(dataDeatail);
@@ -53,8 +55,8 @@ public class HomeCommentAdapter extends RecyclerView.Adapter {
                             return commentDetailAdapter.isHeader(position) ? 2 : 1;
                         }
                     });
-                    holderFirst.commentFirstRv.setLayoutManager(manager);
-                    holderFirst.commentFirstRv.setAdapter(commentDetailAdapter);
+                    holder.commentFirstRv.setLayoutManager(manager);
+                    holder.commentFirstRv.setAdapter(commentDetailAdapter);
                 }
     }
 
