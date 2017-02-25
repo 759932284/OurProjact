@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
 
                     //对Viewpager页号求模去除View列表中要显示的项
-                    position %= imgRes.length;
-                    if (position<0) {
-                        position = imgRes.length + position;
-                    }
+//                    position %= imgRes.length;
+//                    if (position<0) {
+//                        position = imgRes.length + position;
+//                    }
                     ImageView view = new ImageView(MainActivity.this);
                     view.setScaleType(ImageView.ScaleType.FIT_XY);
                     view.setImageResource(imgRes[position]);

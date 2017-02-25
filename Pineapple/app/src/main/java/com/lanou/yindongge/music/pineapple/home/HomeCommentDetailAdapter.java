@@ -1,0 +1,101 @@
+package com.lanou.yindongge.music.pineapple.home;
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.bean.HomeGameTalkResponse;
+import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
+
+import java.util.List;
+
+/**
+ * Created by dllo on 17/2/25.
+ */
+
+public class HomeCommentDetailAdapter extends RecyclerView.Adapter<HomeCommentDetailAdapter.HomeCommentDetailViewHolder> {
+
+    private Context context;
+    private View commentHeaderView;
+    private List<HomeGameTalkResponse.VideoListBean> dataDeatail;
+
+    public void setDataDeatail(List<HomeGameTalkResponse.VideoListBean> dataDeatail) {
+        this.dataDeatail = dataDeatail;
+        notifyDataSetChanged();
+    }
+
+    public HomeCommentDetailAdapter(Context context, View commentHeaderView) {
+        this.context = context;
+        this.commentHeaderView = commentHeaderView;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (isHeader(position)) {
+            return 0;
+        }
+        else return 1;
+    }
+
+    @Override
+    public HomeCommentDetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        HomeCommentDetailViewHolder holder = null;
+        switch (viewType) {
+            case 0:
+                holder = new HomeCommentDetailViewHolder(commentHeaderView);
+                break;
+            case 1:
+                View view = LayoutInflater.from(context).inflate(R.layout.item_home_recommond_game_detail, null);
+                holder = new HomeCommentDetailViewHolder(view);
+                break;
+        }
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(HomeCommentDetailViewHolder holder, int position) {
+        if (isHeader(position)) {
+            holder.commentHeaderTitleTv.setText(dataDeatail.get(position).getTitle());
+            holder.commentHeaderAuthorTv.setText(dataDeatail.get(position).getChannelName());
+            ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
+                    dataDeatail.get(position).getCover(), holder.commentHeaderIv);
+            return;
+        }
+        holder.commentDetailTitleTv.setText(dataDeatail.get(position - 1).getTitle());
+        holder.commentDetailAuthorTv.setText(dataDeatail.get(position - 1).getChannelName());
+        ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
+                dataDeatail.get(position - 1).getAvatar(), holder.commentDetailIv);
+    }
+
+    @Override
+    public int getItemCount() {
+        return dataDeatail != null ? dataDeatail.size() : 0;
+    }
+
+    public boolean isHeader(int position) {
+        return position == 0;
+    }
+
+    class HomeCommentDetailViewHolder extends RecyclerView.ViewHolder{
+        TextView commentHeaderTitleTv;
+        TextView commentHeaderAuthorTv;
+        TextView commentDetailTitleTv;
+        TextView commentDetailAuthorTv;
+        ImageView commentHeaderIv;
+        ImageView commentDetailIv;
+        public HomeCommentDetailViewHolder(View itemView) {
+            super(itemView);
+            commentHeaderTitleTv = (TextView)itemView.findViewById(R.id.home_recommond_title_tv);
+            commentHeaderAuthorTv = (TextView)itemView.findViewById(R.id.home_recommond_author_tv);
+            commentDetailTitleTv = (TextView)itemView.findViewById(R.id.recommond_game_detail_title_tv);
+            commentDetailAuthorTv = (TextView)itemView.findViewById(R.id.recommond_game_detail_author_tv);
+            commentHeaderIv =  (ImageView) itemView.findViewById(R.id.home_recommond_header_iv);
+            commentDetailIv =  (ImageView) itemView.findViewById(R.id.recommond_game_detail_iv);
+        }
+    }
+}

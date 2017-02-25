@@ -26,20 +26,13 @@ public class HomeViewPagerAdapter extends FragmentPagerAdapter {
     }
 
 
-    //    public void setData(List<ChannelBean> data) {
-//        this.data = data;
-//        notifyDataSetChanged();
-//    }
-
-
     public HomeViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
     @Override
     public Fragment getItem(int position) {
-//        int id = data.get(position).getId();
-//        return HomeCommentFragment.getHomeCommentFragment(id);
+
         return fragments.get(position);
     }
 
