@@ -1,23 +1,33 @@
 package com.lanou.yindongge.music.pineapple.home;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.base.BaseFragment;
+import com.lanou.yindongge.music.pineapple.bean.HomeGameTalkResponse;
+import com.lanou.yindongge.music.pineapple.net.OkHttpManager;
+import com.lanou.yindongge.music.pineapple.net.OnNetResultListener;
+import com.lanou.yindongge.music.pineapple.util.Contant;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
  * Created by dllo on 17/2/18.
  */
 
-public class HomeCommentFragment extends BaseFragment {
+public class HomeCommentFragment extends BaseFragment implements OnNetResultListener{
 
-    private TextView contentTv;
     private String url;
     private String channel;
+    private RecyclerView commentRv;
+    private HomeCommentAdapter homeCommentAdapter;
 
     @Override
     public int getLayoutId() {
@@ -36,7 +46,7 @@ public class HomeCommentFragment extends BaseFragment {
 
     @Override
     public void initView(View view) {
-        contentTv = byView(R.id.content_tv);
+        commentRv = (RecyclerView)view.findViewById(R.id.comment_rv);
     }
 
     @Override
@@ -46,49 +56,80 @@ public class HomeCommentFragment extends BaseFragment {
         if (bundle != null){
             url = bundle.getString("url");
             channel = bundle.getString("channel");
-            contentTv.setText(channel);
-//            if (channel.equals("游戏杂谈")){
-//
-//            } else if (channel.equals("搞笑")){
-//
-//            } else if (channel.equals("动画")){
-//
-//            }
         }
-//      写适配器时,使用的Bean"
-
-//        发出网络请求
-//        网络请求成功
-//         if (channel.equals("游戏杂谈")){
-//                  使用游戏杂谈的实体类解析
-//                    GameBean gb = new GameBean();
-//                    AdapterBean ab = new AdapterBean();
-//        ab.title = gb.sss;
-//        ab.imgUrl = gb.picture;
-//            } else if (channel.equals("搞笑")){
-//                  使用搞笑的实体类解析
-//                    LaughBean lb = new LaughBean();
-//                    new AdapterBean().title = lb.xxx;
-
-//            } else if (channel.equals("动画")){
-//
-//            }
+        homeCommentAdapter = new HomeCommentAdapter(context);
+        commentRv.setAdapter(homeCommentAdapter);
+        commentRv.setLayoutManager(new LinearLayoutManager(context));
+        //    "搞笑", "动画", "萌宠", "二次元", "娱乐", "网剧", "英雄联盟", "炉石传说"
+            OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_GAME_TALK_REQUESTCODE, this);
+            OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_LAUGH_REQUESTCODE, this);
+            OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_CATOON_REQUESTCODE, this);
+            OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_ANIMAL_REQUESTCODE, this);
+            OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_FOOD_REQUESTCODE, this);
+            OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_QUADRATIC_REQUESTCODE, this);
+            OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_AMUSE_REQUESTCODE, this);
+            OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_NET_REQUESTCODE, this);
+            OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_HERO_REQUESTCODE, this);
+            OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_LEGEND_REQUESTCODE, this);
     }
 
-    class GameBean {
-        String sss;
-        String picture;
+    @Override
+    public void onSuccessListener(String result, int requestCode) {
+        Gson gson = new Gson();
+
+        if (requestCode == Contant.HOME_GAME_TALK_REQUESTCODE) {
+            Type type = new TypeToken<List<HomeGameTalkResponse>>(){}.getType();
+            List<HomeGameTalkResponse> dataHomeGameTalk = gson.fromJson(result, type);
+            homeCommentAdapter.setDataHomeGameTalk(dataHomeGameTalk);
+        }
+        if (requestCode == Contant.HOME_LAUGH_REQUESTCODE) {
+            Type type = new TypeToken<List<HomeGameTalkResponse>>(){}.getType();
+            List<HomeGameTalkResponse> dataHomeGameTalk = gson.fromJson(result, type);
+            homeCommentAdapter.setDataHomeGameTalk(dataHomeGameTalk);
+        }
+        if (requestCode == Contant.HOME_CATOON_REQUESTCODE) {
+            Type type = new TypeToken<List<HomeGameTalkResponse>>(){}.getType();
+            List<HomeGameTalkResponse> dataHomeGameTalk = gson.fromJson(result, type);
+            homeCommentAdapter.setDataHomeGameTalk(dataHomeGameTalk);
+        }
+        if (requestCode == Contant.HOME_ANIMAL_REQUESTCODE) {
+            Type type = new TypeToken<List<HomeGameTalkResponse>>(){}.getType();
+            List<HomeGameTalkResponse> dataHomeGameTalk = gson.fromJson(result, type);
+            homeCommentAdapter.setDataHomeGameTalk(dataHomeGameTalk);
+        }
+        if (requestCode == Contant.HOME_FOOD_REQUESTCODE) {
+            Type type = new TypeToken<List<HomeGameTalkResponse>>(){}.getType();
+            List<HomeGameTalkResponse> dataHomeGameTalk = gson.fromJson(result, type);
+            homeCommentAdapter.setDataHomeGameTalk(dataHomeGameTalk);
+        }
+        if (requestCode == Contant.HOME_QUADRATIC_REQUESTCODE) {
+            Type type = new TypeToken<List<HomeGameTalkResponse>>(){}.getType();
+            List<HomeGameTalkResponse> dataHomeGameTalk = gson.fromJson(result, type);
+            homeCommentAdapter.setDataHomeGameTalk(dataHomeGameTalk);
+        }
+        if (requestCode == Contant.HOME_AMUSE_REQUESTCODE) {
+            Type type = new TypeToken<List<HomeGameTalkResponse>>(){}.getType();
+            List<HomeGameTalkResponse> dataHomeGameTalk = gson.fromJson(result, type);
+            homeCommentAdapter.setDataHomeGameTalk(dataHomeGameTalk);
+        }
+        if (requestCode == Contant.HOME_NET_REQUESTCODE) {
+            Type type = new TypeToken<List<HomeGameTalkResponse>>(){}.getType();
+            List<HomeGameTalkResponse> dataHomeGameTalk = gson.fromJson(result, type);
+            homeCommentAdapter.setDataHomeGameTalk(dataHomeGameTalk);
+        }
+        if (requestCode == Contant.HOME_HERO_REQUESTCODE) {
+            Type type = new TypeToken<List<HomeGameTalkResponse>>(){}.getType();
+            List<HomeGameTalkResponse> dataHomeGameTalk = gson.fromJson(result, type);
+            homeCommentAdapter.setDataHomeGameTalk(dataHomeGameTalk);
+        }
+        if (requestCode == Contant.HOME_LEGEND_REQUESTCODE) {
+            Type type = new TypeToken<List<HomeGameTalkResponse>>(){}.getType();
+            List<HomeGameTalkResponse> dataHomeGameTalk = gson.fromJson(result, type);
+            homeCommentAdapter.setDataHomeGameTalk(dataHomeGameTalk);
+        }
     }
-
-    class LaughBean{
-        List<String> imgUrl;
-        String xxx;
-    }
-
-    class AdapterBean {
-        String title;
-        String subTitle;
-        String imgUrl;
-
+    @Override
+    public void onFailureListener(String errMsg) {
+        Toast.makeText(context, errMsg, Toast.LENGTH_SHORT).show();
     }
 }

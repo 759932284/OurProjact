@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.google.gson.reflect.TypeToken;
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.bean.AlbumResponse;
 import com.lanou.yindongge.music.pineapple.bean.BacteriaResponse;
+import com.lanou.yindongge.music.pineapple.bean.BannerResponse;
 import com.lanou.yindongge.music.pineapple.bean.GameTalkResponse;
 import com.lanou.yindongge.music.pineapple.bean.PopularResponse;
 import com.lanou.yindongge.music.pineapple.bean.RecommondResponse;
@@ -89,9 +91,23 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter implements OnNetR
     int[] imgRes = {R.mipmap.a, R.mipmap.b, R.mipmap.c, R.mipmap.d,
             R.mipmap.e, R.mipmap.f, R.mipmap.g, R.mipmap.h, R.mipmap.i};
     PagerAdapter mAdapter;
+    private List<BannerResponse> dataBanner;
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        OkHttpManager.getInstance().startGetRequest(Contant.BANNER, Contant.BANNER_REQUESTCODE, new OnNetResultListener() {
+            @Override
+            public void onSuccessListener(String result, int requestCode) {
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<BannerResponse>>(){}.getType();
+                dataBanner = gson.fromJson(result, type);
+            }
+
+            @Override
+            public void onFailureListener(String errMsg) {
+
+            }
+        });
         int viewType = getItemViewType(position);
         switch (viewType) {
             case 0:
@@ -102,18 +118,28 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter implements OnNetR
                 holderHead.mViewPager.setAdapter(mAdapter = new PagerAdapter()
                 {
                     @Override
-                    public Object instantiateItem(ViewGroup container, int position)
-                    {
+                    public Object instantiateItem(ViewGroup container, int position) {
                         position %= imgRes.length;
-                        if (position<0) {
+                        if (position < 0) {
                             position = imgRes.length + position;
                         }
-                        ImageView view = new ImageView(context);
+
+                        final ImageView view = new ImageView(context);
                         view.setScaleType(ImageView.ScaleType.FIT_XY);
-                        view.setImageResource(imgRes[position]);
+
+
+//                        view.setImageResource(imgRes[position]);
+                        if (dataBanner != null && dataBanner.size() > 0) {
+                            Log.d("HomeRecommondAdapter", "dataBanner.size():" + dataBanner);
+
+                            if (position > 0 && position < 6) {
+                                ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
+                                        dataBanner.get(position).getCover(), view);
+                            }
+
+                        }
 
                         //如果View已经在之前添加到了一个父组件，则必须先remove，否则会抛出IllegalStateException。
-
                         ViewParent viewParent = view.getParent();
                         if (viewParent!=null){
                             ViewGroup parent = (ViewGroup)viewParent;
