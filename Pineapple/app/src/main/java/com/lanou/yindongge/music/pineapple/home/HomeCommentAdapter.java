@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.bean.HomeGameTalkResponse;
 import com.lanou.yindongge.music.pineapple.detail.PlayActivity;
-import com.lanou.yindongge.music.pineapple.detail.PlayDetailActivity;
 
 import java.util.List;
 
@@ -44,38 +43,38 @@ public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.
 
     @Override
     public void onBindViewHolder(final HomeCommentFirstViewHolder holder, int position) {
-                if (dataHomeGameTalk != null && dataHomeGameTalk.size() > 0) {
-                    View commentHeaderView = LayoutInflater.from(context).inflate(R.layout.item_home_header, null);
-              //      HomeCommentFirstViewHolder holderFirst = (HomeCommentFirstViewHolder)holder;
-                    holder.commentFirstTv.setText(dataHomeGameTalk.get(position).getVideoCategory().getName());
-                    commentDetailAdapter = new HomeCommentDetailAdapter(context, commentHeaderView);
-                    List<HomeGameTalkResponse.VideoListBean> dataDeatail = dataHomeGameTalk.get(position).getVideoList();
-                    commentDetailAdapter.setDataDeatail(dataDeatail);
-                    GridLayoutManager manager = new GridLayoutManager(context, 2);
-                    manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                        @Override
-                        public int getSpanSize(int position) {
-                            return commentDetailAdapter.isHeader(position) ? 2 : 1;
-                        }
-                    });
-                    holder.commentFirstRv.setLayoutManager(manager);
-                    holder.commentFirstRv.setAdapter(commentDetailAdapter);
+        if (dataHomeGameTalk != null && dataHomeGameTalk.size() > 0) {
+            View commentHeaderView = LayoutInflater.from(context).inflate(R.layout.item_home_header, null);
+            //      HomeCommentFirstViewHolder holderFirst = (HomeCommentFirstViewHolder)holder;
+            holder.commentFirstTv.setText(dataHomeGameTalk.get(position).getVideoCategory().getName());
+            commentDetailAdapter = new HomeCommentDetailAdapter(context, commentHeaderView);
+            List<HomeGameTalkResponse.VideoListBean> dataDeatail = dataHomeGameTalk.get(position).getVideoList();
+            commentDetailAdapter.setDataDeatail(dataDeatail);
+            GridLayoutManager manager = new GridLayoutManager(context, 2);
+            manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    return commentDetailAdapter.isHeader(position) ? 2 : 1;
+                }
+            });
+            holder.commentFirstRv.setLayoutManager(manager);
+            holder.commentFirstRv.setAdapter(commentDetailAdapter);
 
-                    /************************ 跳转视频播放详情界面 *********************************/
-                    commentDetailAdapter.setOnClickCommenListener(new HomeCommentDetailAdapter.OnClickCommenListener() {
-                        @Override
-                        public void onClickCommen(int position) {
-                            Intent intent = new Intent(context, PlayActivity.class);
-                            String url = dataHomeGameTalk.get(position).getVideoList().get(position).getLinkMp4();
-                            intent.putExtra("url", url);
-                            context.startActivity(intent);
+            /************************ 跳转视频播放详情界面 *********************************/
+            commentDetailAdapter.setOnClickCommenListener(new HomeCommentDetailAdapter.OnClickCommenListener() {
+                @Override
+                public void onClickCommen(int position) {
+                    Intent intent = new Intent(context, PlayActivity.class);
+                    String url = dataHomeGameTalk.get(position).getVideoList().get(position).getLinkMp4();
+                    intent.putExtra("url", url);
+                    context.startActivity(intent);
 
 //                            context.startActivity(new Intent(context, PlayActivity.class));
 
-                        }
-                    });
-
                 }
+            });
+
+        }
     }
 
     @Override
@@ -83,13 +82,14 @@ public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.
         return dataHomeGameTalk != null ? dataHomeGameTalk.size() : 0;
     }
 
-    class HomeCommentFirstViewHolder extends RecyclerView.ViewHolder{
+    class HomeCommentFirstViewHolder extends RecyclerView.ViewHolder {
         TextView commentFirstTv;
         RecyclerView commentFirstRv;
+
         public HomeCommentFirstViewHolder(View itemView) {
             super(itemView);
-            commentFirstTv = (TextView)itemView.findViewById(R.id.comment_first_tv);
-            commentFirstRv = (RecyclerView)itemView.findViewById(R.id.comment_first_rv);
+            commentFirstTv = (TextView) itemView.findViewById(R.id.comment_first_tv);
+            commentFirstRv = (RecyclerView) itemView.findViewById(R.id.comment_first_rv);
         }
     }
 

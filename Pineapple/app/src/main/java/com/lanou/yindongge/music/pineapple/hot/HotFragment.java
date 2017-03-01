@@ -61,9 +61,9 @@ public class HotFragment extends BaseFragment {
 //            getSupportFragmentManager().beginTransaction()
 //                    .add(R.id.container, new CardFragment())
 //                    .commitAllowingStateLoss();
-getChildFragmentManager().beginTransaction()
-        .add(R.id.container, new CardFragment())
-        .commitAllowingStateLoss();
+        getChildFragmentManager().beginTransaction()
+                .add(R.id.container, new CardFragment())
+                .commitAllowingStateLoss();
 //            getFragmentManager().beginTransaction()
 //                    .add(R.id.container, new CardFragment())
 //                    .commitAllowingStateLoss();
