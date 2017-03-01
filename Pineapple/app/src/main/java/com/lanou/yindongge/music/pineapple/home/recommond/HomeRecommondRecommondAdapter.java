@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.bean.RecommondResponse;
 import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
+import com.lanou.yindongge.music.pineapple.util.ScreenSizeUtils;
+import com.lanou.yindongge.music.pineapple.util.ScreenState;
 
 import java.util.List;
 
@@ -36,6 +38,13 @@ public class HomeRecommondRecommondAdapter extends RecyclerView.Adapter<HomeReco
     public HomeRecommondRecommondViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_home_recommond_recommond_detail, null);
         HomeRecommondRecommondViewHolder holder = new HomeRecommondRecommondViewHolder(view);
+
+        // 适配屏幕宽高
+        ViewGroup.LayoutParams lp = holder.recommondIv.getLayoutParams();
+        lp.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH) / 21 * 10;
+        lp.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 5;
+        holder.recommondIv.setLayoutParams(lp);
+
         return holder;
     }
 

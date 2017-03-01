@@ -15,8 +15,11 @@
             android:id="@+id/recommond_popular_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="#000000"
+            android:textSize="15sp"
             android:layout_toRightOf="@+id/recommond_popular_iv"
-            android:text="人气周榜"/>
+            />
         <ImageView
             android:id="@+id/recommond_popular_more_iv"
             android:layout_width="wrap_content"

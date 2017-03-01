@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.bean.PopularResponse;
 import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
+import com.lanou.yindongge.music.pineapple.util.ScreenSizeUtils;
+import com.lanou.yindongge.music.pineapple.util.ScreenState;
 
 import java.util.List;
 
@@ -36,6 +38,13 @@ public class HomeRecommondPopularAdapter extends RecyclerView.Adapter<HomeRecomm
     public HomeRecommondPopularViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_home_recommond_popular_detail, null);
         HomeRecommondPopularViewHolder holder = new HomeRecommondPopularViewHolder(view);
+
+        // 适配屏幕宽高
+        ViewGroup.LayoutParams lp = holder.popularIv.getLayoutParams();
+        lp.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH) / 4;
+        lp.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 5;
+        holder.popularIv.setLayoutParams(lp);
+
         return holder;
     }
 
@@ -43,9 +52,9 @@ public class HomeRecommondPopularAdapter extends RecyclerView.Adapter<HomeRecomm
     public void onBindViewHolder(HomeRecommondPopularViewHolder holder, int position) {
         holder.popularOrderTv.setText(position + 1 + "");
         holder.popularTitleTv.setText(dataPopular.get(position).getName());
-        holder.popularNumTv.setText(dataPopular.get(position).getChannelName());
+        holder.popularNumTv.setText(dataPopular.get(position).getVideoCount() + "");
         ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
-                dataPopular.get(position).getAvatar(), holder.popularIv);
+                dataPopular.get(position).getCover(), holder.popularIv);
     }
 
     @Override

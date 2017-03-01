@@ -14,6 +14,9 @@
             android:src="@mipmap/home_title_img_recommend_video"/>
         <TextView
             android:id="@+id/bacteria_tv"
+            android:layout_marginStart="5dp"
+            android:textColor="#000000"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
