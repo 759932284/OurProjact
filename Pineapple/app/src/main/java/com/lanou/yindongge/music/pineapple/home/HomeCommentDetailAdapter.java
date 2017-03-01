@@ -24,6 +24,16 @@ public class HomeCommentDetailAdapter extends RecyclerView.Adapter<HomeCommentDe
     private View commentHeaderView;
     private List<HomeGameTalkResponse.VideoListBean> dataDeatail;
 
+
+    /********************    点击事件    *********************************************/
+    private HomeCommentDetailAdapter.OnClickCommenListener onClickCommenListener;
+
+    public void setOnClickCommenListener(HomeCommentDetailAdapter.OnClickCommenListener onClickCommenListener) {
+        this.onClickCommenListener = onClickCommenListener;
+        notifyDataSetChanged();
+    }
+    /********************    点击事件    *********************************************/
+
     public void setDataDeatail(List<HomeGameTalkResponse.VideoListBean> dataDeatail) {
         this.dataDeatail = dataDeatail;
         notifyDataSetChanged();
@@ -58,18 +68,39 @@ public class HomeCommentDetailAdapter extends RecyclerView.Adapter<HomeCommentDe
     }
 
     @Override
-    public void onBindViewHolder(HomeCommentDetailViewHolder holder, int position) {
+    public void onBindViewHolder(final HomeCommentDetailViewHolder holder, int position) {
         if (isHeader(position)) {
             holder.commentHeaderTitleTv.setText(dataDeatail.get(position).getTitle());
             holder.commentHeaderAuthorTv.setText(dataDeatail.get(position).getChannelName());
             ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
                     dataDeatail.get(position).getCover(), holder.commentHeaderIv);
+
+
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = holder.getLayoutPosition();
+                    onClickCommenListener.onClickCommen(pos);
+                }
+            });
+
+
             return;
         }
         holder.commentDetailTitleTv.setText(dataDeatail.get(position - 1).getTitle());
         holder.commentDetailAuthorTv.setText(dataDeatail.get(position - 1).getChannelName());
         ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
                 dataDeatail.get(position - 1).getAvatar(), holder.commentDetailIv);
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos = holder.getLayoutPosition();
+                onClickCommenListener.onClickCommen(pos);
+            }
+        });
     }
 
     @Override
@@ -97,5 +128,9 @@ public class HomeCommentDetailAdapter extends RecyclerView.Adapter<HomeCommentDe
             commentHeaderIv =  (ImageView) itemView.findViewById(R.id.home_recommond_header_iv);
             commentDetailIv =  (ImageView) itemView.findViewById(R.id.recommond_game_detail_iv);
         }
+    }
+
+    interface OnClickCommenListener {
+        void onClickCommen(int position);
     }
 }

@@ -3,6 +3,7 @@ package com.lanou.yindongge.music.pineapple.home.gametalk;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +20,14 @@ import java.util.List;
 
 public class HomeGameTalkAdapter extends RecyclerView.Adapter {
     private Context context;
-//    private List<String> data;
+
+    /******************** **************************************/
+//    private OnVideoPlayListener onVideoPlayListener;
 //
-//    public void setData(List<String> data) {
-//        this.data = data;
-//        notifyDataSetChanged();
+//    public void setOnVideoPlayListener(OnVideoPlayListener onVideoPlayListener) {
+//        this.onVideoPlayListener = onVideoPlayListener;
 //    }
+    /******************** **************************************/
 
     public HomeGameTalkAdapter(Context context) {
         this.context = context;
@@ -74,6 +77,7 @@ public class HomeGameTalkAdapter extends RecyclerView.Adapter {
                 // 设置布局类型,连接适配器
                 holderScoff.scoffRv.setLayoutManager(scoffManager);
                 holderScoff.scoffRv.setAdapter(scoffAdapter);
+
                 break;
             case 1:
                 // 抽取跨列的布局
@@ -100,6 +104,7 @@ public class HomeGameTalkAdapter extends RecyclerView.Adapter {
                 holderMobileGame.mobileGameRv.setLayoutManager(mobileGameManager);
                 holderMobileGame.mobileGameRv.setAdapter(mobileGameAdapter);
 
+
                 break;
         }
     }
@@ -120,6 +125,7 @@ public class HomeGameTalkAdapter extends RecyclerView.Adapter {
         return 2;
     }
 
+
     class HomeGameTalkScoffViewHolder extends RecyclerView.ViewHolder {
         TextView scoffTv;
         RecyclerView scoffRv;
@@ -138,4 +144,11 @@ public class HomeGameTalkAdapter extends RecyclerView.Adapter {
             mobileGameRv = (RecyclerView) itemView.findViewById(R.id.mobile_game_rv);
         }
     }
+
+
+    /******************** **************************************/
+//    interface OnVideoPlayListener{
+//        void onClick(int position);
+//    }
+    /******************** **************************************/
 }

@@ -1,6 +1,7 @@
 package com.lanou.yindongge.music.pineapple.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.bean.HomeGameTalkResponse;
+import com.lanou.yindongge.music.pineapple.detail.PlayActivity;
+import com.lanou.yindongge.music.pineapple.detail.PlayDetailActivity;
 
 import java.util.List;
 
@@ -40,7 +43,7 @@ public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.
     }
 
     @Override
-    public void onBindViewHolder(HomeCommentFirstViewHolder holder, int position) {
+    public void onBindViewHolder(final HomeCommentFirstViewHolder holder, int position) {
                 if (dataHomeGameTalk != null && dataHomeGameTalk.size() > 0) {
                     View commentHeaderView = LayoutInflater.from(context).inflate(R.layout.item_home_header, null);
               //      HomeCommentFirstViewHolder holderFirst = (HomeCommentFirstViewHolder)holder;
@@ -57,6 +60,21 @@ public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.
                     });
                     holder.commentFirstRv.setLayoutManager(manager);
                     holder.commentFirstRv.setAdapter(commentDetailAdapter);
+
+                    /************************ 跳转视频播放详情界面 *********************************/
+                    commentDetailAdapter.setOnClickCommenListener(new HomeCommentDetailAdapter.OnClickCommenListener() {
+                        @Override
+                        public void onClickCommen(int position) {
+                            Intent intent = new Intent(context, PlayActivity.class);
+                            String url = dataHomeGameTalk.get(position).getVideoList().get(position).getLinkMp4();
+                            intent.putExtra("url", url);
+                            context.startActivity(intent);
+
+//                            context.startActivity(new Intent(context, PlayActivity.class));
+
+                        }
+                    });
+
                 }
     }
 
@@ -74,6 +92,8 @@ public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.
             commentFirstRv = (RecyclerView)itemView.findViewById(R.id.comment_first_rv);
         }
     }
+
+
 }
 
 

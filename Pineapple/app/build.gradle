@@ -38,4 +38,7 @@ dependencies {
 
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.facebook.rebound:rebound:0.3.8'
+
+// 视频播放
+    compile project(':vitamio2')
 }

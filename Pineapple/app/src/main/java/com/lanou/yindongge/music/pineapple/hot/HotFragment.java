@@ -10,8 +10,14 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.StackView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.base.BaseFragment;
+import com.lanou.yindongge.music.pineapple.bean.HotResponse;
+import com.lanou.yindongge.music.pineapple.net.OkHttpManager;
+import com.lanou.yindongge.music.pineapple.net.OnNetResultListener;
+import com.lanou.yindongge.music.pineapple.util.Contant;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -20,15 +26,16 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 /**
  * Created by dllo on 17/2/18.
  */
 
 public class HotFragment extends BaseFragment {
 
-//    private StackView stackView;
-//    private Button previousButon, nextButton;
-//    private int[] colors = {Color.BLUE, Color.CYAN, Color.GREEN, Color.RED};
+    private List<HotResponse> iconDatas;
 
     @Override
     public int getLayoutId() {
@@ -37,32 +44,10 @@ public class HotFragment extends BaseFragment {
 
     @Override
     public void initView(View view) {
-//        stackView = (StackView) view.findViewById(R.id.hot_sv);
-//        previousButon = (Button) view.findViewById(R.id.previousButton);
-//        nextButton = (Button) view.findViewById(R.id.nextButton);
     }
 
-
-//SavedState savedInstanceState =
-//        getFragmentManager().saveFragmentInstanceState(new HotFragment());
     @Override
     public void initData() {
-//        HotAdapter hotAdapter = new HotAdapter(context, colors);
-//        stackView.advance();
-//        stackView.setAdapter(hotAdapter);
-//
-//        previousButon.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                stackView.showPrevious();
-//            }
-//        });
-//        nextButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                stackView.showNext();
-//            }
-//        });
 
 /**
  *  设置当前的Activity 无Title并且全屏.
@@ -76,10 +61,12 @@ public class HotFragment extends BaseFragment {
 //            getSupportFragmentManager().beginTransaction()
 //                    .add(R.id.container, new CardFragment())
 //                    .commitAllowingStateLoss();
-
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new CardFragment())
-                    .commitAllowingStateLoss();
+getChildFragmentManager().beginTransaction()
+        .add(R.id.container, new CardFragment())
+        .commitAllowingStateLoss();
+//            getFragmentManager().beginTransaction()
+//                    .add(R.id.container, new CardFragment())
+//                    .commitAllowingStateLoss();
 
 //        }
     }
