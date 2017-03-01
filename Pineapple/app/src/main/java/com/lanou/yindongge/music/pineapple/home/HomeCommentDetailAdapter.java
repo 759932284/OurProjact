@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.bean.HomeGameTalkResponse;
 import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
+import com.lanou.yindongge.music.pineapple.util.ScreenSizeUtils;
+import com.lanou.yindongge.music.pineapple.util.ScreenState;
 
 import java.util.List;
 
@@ -48,10 +50,18 @@ public class HomeCommentDetailAdapter extends RecyclerView.Adapter<HomeCommentDe
         switch (viewType) {
             case 0:
                 holder = new HomeCommentDetailViewHolder(commentHeaderView);
+                ViewGroup.LayoutParams lpHeader = holder.commentHeaderIv.getLayoutParams();
+                lpHeader.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH);
+                lpHeader.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 3;
+                holder.commentHeaderIv.setLayoutParams(lpHeader);
                 break;
             case 1:
                 View view = LayoutInflater.from(context).inflate(R.layout.item_home_recommond_game_detail, null);
                 holder = new HomeCommentDetailViewHolder(view);
+                ViewGroup.LayoutParams lp = holder.commentDetailIv.getLayoutParams();
+                lp.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH) / 21 * 10;
+                lp.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 5;
+                holder.commentDetailIv.setLayoutParams(lp);
                 break;
         }
         return holder;
@@ -66,10 +76,22 @@ public class HomeCommentDetailAdapter extends RecyclerView.Adapter<HomeCommentDe
                     dataDeatail.get(position).getCover(), holder.commentHeaderIv);
             return;
         }
-        holder.commentDetailTitleTv.setText(dataDeatail.get(position - 1).getTitle());
-        holder.commentDetailAuthorTv.setText(dataDeatail.get(position - 1).getChannelName());
+        holder.commentDetailTitleTv.setText(dataDeatail.get(position).getTitle());
+        holder.commentDetailAuthorTv.setText(dataDeatail.get(position).getChannelName());
+
+//        WindowManager windowManager = ((Activity) context).getWindowManager();
+//        // 适应屏幕宽高
+//        Display display = windowManager.getDefaultDisplay();
+//        int screenWidth = display.getWidth();
+//        int screenHeight = display.getHeight();
+//        Glide.with(context)
+//                .load(dataDeatail.get(position - 1).getAvatar())
+//                .override(screenWidth / 2, screenHeight / 3)
+//                .into(holder.commentDetailIv);
+
         ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
-                dataDeatail.get(position - 1).getAvatar(), holder.commentDetailIv);
+                dataDeatail.get(position).getCover(), holder.commentDetailIv);
+
     }
 
     @Override

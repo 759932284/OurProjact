@@ -47,6 +47,7 @@ public class HomeFragment extends BaseFragment {
 
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new HomeRecommondFragment());
+        // 复用的所有碎片
         fragments.add(HomeCommentFragment.newInstance(Contant.HOME_GAME_TALK, "游戏杂谈"));
         fragments.add(HomeCommentFragment.newInstance(Contant.HOME_LAUGH, "搞笑"));
         fragments.add(HomeCommentFragment.newInstance(Contant.HOME_CATOON, "动画"));
