@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.bean.GameTalkResponse;
 import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
+import com.lanou.yindongge.music.pineapple.util.ScreenSizeUtils;
+import com.lanou.yindongge.music.pineapple.util.ScreenState;
 
 import java.util.List;
 
@@ -48,10 +50,23 @@ public class HomeRecommondGameAdapter extends RecyclerView.Adapter<HomeRecommond
         switch (viewType) {
             case 0:
                 holder = new HomeRecommondGameViewHolder(gameHeaderView);
+                // 适配屏幕宽高
+                ViewGroup.LayoutParams lpHeader = holder.gameHeaderIv.getLayoutParams();
+                lpHeader.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH);
+                lpHeader.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 3;
+                holder.gameHeaderIv.setLayoutParams(lpHeader);
+
                 break;
             case 1:
                 View view = LayoutInflater.from(context).inflate(R.layout.item_home_recommond_game_detail, null);
                 holder = new HomeRecommondGameViewHolder(view);
+
+                // 适配屏幕宽高
+                ViewGroup.LayoutParams lp = holder.gameDetailIv.getLayoutParams();
+                lp.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH) / 21 * 10;
+                lp.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 5;
+                holder.gameDetailIv.setLayoutParams(lp);
+
                 break;
         }
         return holder;
@@ -67,10 +82,10 @@ public class HomeRecommondGameAdapter extends RecyclerView.Adapter<HomeRecommond
                     dataGameTalk.get(position).getCover(), holder.gameHeaderIv);
             return;
         }
-        holder.gameDetailTitleTv.setText(dataGameTalk.get(position - 1).getTitle());
-        holder.gameDetailAuthorTv.setText(dataGameTalk.get(position - 1).getChannelName());
+        holder.gameDetailTitleTv.setText(dataGameTalk.get(position).getTitle());
+        holder.gameDetailAuthorTv.setText(dataGameTalk.get(position).getChannelName());
         ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
-                dataGameTalk.get(position - 1).getAvatar(), holder.gameDetailIv);
+                dataGameTalk.get(position).getCover(), holder.gameDetailIv);
     }
 
     @Override

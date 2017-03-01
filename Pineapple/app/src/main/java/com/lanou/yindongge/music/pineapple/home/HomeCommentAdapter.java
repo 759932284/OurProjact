@@ -34,7 +34,6 @@ public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.
     @Override
     public HomeCommentFirstViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_home_comment_first, null);
-        //RecyclerView.ViewHolder holder = null;
         HomeCommentFirstViewHolder holder = new HomeCommentFirstViewHolder(view);
         return holder;
     }

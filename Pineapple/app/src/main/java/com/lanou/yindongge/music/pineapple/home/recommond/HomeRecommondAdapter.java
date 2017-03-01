@@ -1,17 +1,15 @@
 package com.lanou.yindongge.music.pineapple.home.recommond;
 
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +26,8 @@ import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
 import com.lanou.yindongge.music.pineapple.net.OkHttpManager;
 import com.lanou.yindongge.music.pineapple.net.OnNetResultListener;
 import com.lanou.yindongge.music.pineapple.util.Contant;
+import com.lanou.yindongge.music.pineapple.util.ScreenSizeUtils;
+import com.lanou.yindongge.music.pineapple.util.ScreenState;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -44,7 +44,7 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter implements OnNetR
     private HomeRecommondAlbumAdapter albumAdapter;
     private HomeRecommondAlbumViewHolder holderAlbum;
     private HomeRecommondRecommondAdapter recommondAdapter;
-
+    private RotateAdapter rotateAdapter;
     public HomeRecommondAdapter(Context context) {
         this.context = context;
     }
@@ -88,93 +88,59 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter implements OnNetR
         return holder;
     }
 
-    int[] imgRes = {R.mipmap.a, R.mipmap.b, R.mipmap.c, R.mipmap.d,
-            R.mipmap.e, R.mipmap.f, R.mipmap.g, R.mipmap.h, R.mipmap.i};
-    PagerAdapter mAdapter;
     private List<BannerResponse> dataBanner;
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        OkHttpManager.getInstance().startGetRequest(Contant.BANNER, Contant.BANNER_REQUESTCODE, new OnNetResultListener() {
-            @Override
-            public void onSuccessListener(String result, int requestCode) {
-                Gson gson = new Gson();
-                Type type = new TypeToken<List<BannerResponse>>(){}.getType();
-                dataBanner = gson.fromJson(result, type);
-            }
 
-            @Override
-            public void onFailureListener(String errMsg) {
-
-            }
-        });
         int viewType = getItemViewType(position);
         switch (viewType) {
             case 0:
-                HomeRecommondHeadViewHolder holderHead = (HomeRecommondHeadViewHolder)holder;
 
+                final HomeRecommondHeadViewHolder holderHead = (HomeRecommondHeadViewHolder)holder;
                 holderHead.mViewPager.setPageMargin(20);
                 holderHead.mViewPager.setOffscreenPageLimit(3);
-                holderHead.mViewPager.setAdapter(mAdapter = new PagerAdapter()
-                {
+                final RotateAdapter rotateAdapter = new RotateAdapter(context);
+                holderHead.mViewPager.setAdapter(rotateAdapter);
+
+//                // 轮播图外面布局
+//                ViewGroup.LayoutParams lpOut = holderHead.mViewPager.getLayoutParams();
+//                lpOut.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH);
+//                lpOut.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 4;
+//                holderHead.bannerLl.setLayoutParams(lpOut);
+//
+//                // 轮播图高度适配
+//                ViewGroup.LayoutParams lp = holderHead.mViewPager.getLayoutParams();
+//                lp.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH) / 5 * 4;
+//                lp.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 4;
+//                holderHead.mViewPager.setLayoutParams(lp);
+
+                OkHttpManager.getInstance().startGetRequest(Contant.BANNER, Contant.BANNER_REQUESTCODE, new OnNetResultListener() {
                     @Override
-                    public Object instantiateItem(ViewGroup container, int position) {
-                        position %= imgRes.length;
-                        if (position < 0) {
-                            position = imgRes.length + position;
+                    public void onSuccessListener(String result, int requestCode) {
+                        Gson gson = new Gson();
+                        Type type = new TypeToken<List<BannerResponse>>(){}.getType();
+                        dataBanner = gson.fromJson(result, type);
+                        if (dataBanner != null) {
+                            rotateAdapter.setDataBanner(dataBanner);
                         }
 
-                        final ImageView view = new ImageView(context);
-                        view.setScaleType(ImageView.ScaleType.FIT_XY);
+                            holderHead.mViewPager.setCurrentItem(10000);
+                            holderHead.mViewPager.setPageTransformer(true, new ScaleInTransformer());
 
-
-//                        view.setImageResource(imgRes[position]);
-                        if (dataBanner != null && dataBanner.size() > 0) {
-                            Log.d("HomeRecommondAdapter", "dataBanner.size():" + dataBanner);
-
-                            if (position > 0 && position < 6) {
-                                ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
-                                        dataBanner.get(position).getCover(), view);
-                            }
-
-                        }
-
-                        //如果View已经在之前添加到了一个父组件，则必须先remove，否则会抛出IllegalStateException。
-                        ViewParent viewParent = view.getParent();
-                        if (viewParent!=null){
-                            ViewGroup parent = (ViewGroup)viewParent;
-                            parent.removeView(view);
-                        }
-                        container.addView(view);
-                        return view;
                     }
 
                     @Override
-                    public void destroyItem(ViewGroup container, int position, Object object)
-                    {
-                        container.removeView((View) object);
-                    }
+                    public void onFailureListener(String errMsg) {
 
-                    @Override
-                    public int getCount()
-                    {
-                     //   return imgRes.length;
-                        return Integer.MAX_VALUE;
-                    }
-
-                    @Override
-                    public boolean isViewFromObject(View view, Object o)
-                    {
-                        return view == o;
                     }
                 });
-                holderHead.mViewPager.setCurrentItem(10000);
-                holderHead.mViewPager.setPageTransformer(true, new ScaleInTransformer());
                 break;
             case 1:
                 HomeRecommondBacteriaViewHolder holderBacteria = (HomeRecommondBacteriaViewHolder)holder;
                 holderBacteria.bacteriaTv.setText("菠萝菌力荐");
                 bacteriaAdapter = new HomeRecommondBacteriaAdapter(context);
+                // 网络请求 菠萝菌力荐
                 OkHttpManager.getInstance().startGetRequest(Contant.BACTERIA, Contant.BACTERIA_REQUESTCODE, this);
                 holderBacteria.bacteriaRv.setLayoutManager(new GridLayoutManager(context, 2,
                                                           LinearLayoutManager.VERTICAL, false));
@@ -193,7 +159,7 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter implements OnNetR
             case 3:
                 View gameHeaderView = LayoutInflater.from(context).inflate(R.layout.item_home_header, null);
                 HomeRecommondGameViewHolder holderGame = (HomeRecommondGameViewHolder)holder;
-                holderGame.gameTv.setText("游戏杂谈...");
+                holderGame.gameTv.setText("游戏杂谈");
                 gameAdapter = new HomeRecommondGameAdapter(context, gameHeaderView);
                 // 获取人气榜网络数据
                 OkHttpManager.getInstance().startGetRequest(Contant.GAME_TALK, Contant.GAME_TALK_REQUESTCODE, this);
@@ -254,6 +220,7 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter implements OnNetR
         return 6;
     }
 
+    // 网络获取成功后的操作
     @Override
     public void onSuccessListener(String result, int requestCode) {
         Gson gson = new Gson();
@@ -282,6 +249,13 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter implements OnNetR
             List<AlbumResponse> dataAlbumAll = gson.fromJson(result, type);
             ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
                     dataAlbumAll.get(0).getCover(), holderAlbum.albumIv);
+
+            // 适配屏幕宽高
+            ViewGroup.LayoutParams lpHeader = holderAlbum.albumIv.getLayoutParams();
+            lpHeader.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH);
+            lpHeader.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 3;
+            holderAlbum.albumIv.setLayoutParams(lpHeader);
+
             holderAlbum.albumInnerTv.setText(dataAlbumAll.get(0).getName());
             List<AlbumResponse.VideoListBean> dataAlbum = dataAlbumAll.get(0).getVideoList();
             albumAdapter.setDataAlbum(dataAlbum);
@@ -311,10 +285,11 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter implements OnNetR
 
     class HomeRecommondHeadViewHolder extends RecyclerView.ViewHolder {
         ViewPager mViewPager;
-
+        LinearLayout bannerLl;
         public HomeRecommondHeadViewHolder(View itemView) {
             super(itemView);
             mViewPager = (ViewPager) itemView.findViewById(R.id.id_viewpager);
+            bannerLl = (LinearLayout)itemView.findViewById(R.id.banner_ll);
         }
     }
     class HomeRecommondPopularViewHolder extends RecyclerView.ViewHolder {

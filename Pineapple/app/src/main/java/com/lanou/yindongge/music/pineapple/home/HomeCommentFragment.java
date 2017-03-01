@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -129,6 +130,6 @@ public class HomeCommentFragment extends BaseFragment implements OnNetResultList
     }
     @Override
     public void onFailureListener(String errMsg) {
-     //   Toast.makeText(context, errMsg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, errMsg, Toast.LENGTH_SHORT).show();
     }
 }

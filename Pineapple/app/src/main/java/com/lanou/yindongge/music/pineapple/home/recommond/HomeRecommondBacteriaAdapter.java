@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.bean.BacteriaResponse;
 import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
+import com.lanou.yindongge.music.pineapple.util.ScreenSizeUtils;
+import com.lanou.yindongge.music.pineapple.util.ScreenState;
 
 import java.util.List;
 
@@ -36,6 +38,12 @@ public class HomeRecommondBacteriaAdapter extends RecyclerView.Adapter<HomeRecom
     public BacteriaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_home_recommond_bacteria_detail, null);
         BacteriaViewHolder holder = new BacteriaViewHolder(view);
+
+        ViewGroup.LayoutParams lp = holder.bacteriaIv.getLayoutParams();
+        lp.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH) / 21 * 10;
+        lp.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 5;
+        holder.bacteriaIv.setLayoutParams(lp);
+
         return holder;
     }
 
@@ -44,7 +52,7 @@ public class HomeRecommondBacteriaAdapter extends RecyclerView.Adapter<HomeRecom
         holder.bacteriaTitleTv.setText(dataBacteria.get(position).getTitle());
         holder.bacteriaAuthorTv.setText(dataBacteria.get(position).getChannelName());
         ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
-                dataBacteria.get(position).getAvatar(), holder.bacteriaIv);
+                dataBacteria.get(position).getCover(), holder.bacteriaIv);
     }
 
     @Override
