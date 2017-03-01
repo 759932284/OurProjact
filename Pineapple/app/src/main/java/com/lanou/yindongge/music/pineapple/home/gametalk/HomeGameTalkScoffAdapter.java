@@ -19,6 +19,9 @@ public class HomeGameTalkScoffAdapter extends RecyclerView.Adapter<HomeGameTalkS
     private Context context;
     private List<String> dataScoff;
     private View scoffHeaderView;
+
+
+
     public void setDataScoff(List<String> dataScoff) {
         this.dataScoff = dataScoff;
         notifyDataSetChanged();
@@ -47,6 +50,7 @@ public class HomeGameTalkScoffAdapter extends RecyclerView.Adapter<HomeGameTalkS
             case 1:
                 View view = LayoutInflater.from(context).inflate(R.layout.item_home_gametalk_scoff_detail, null);
                 holder = new HomeGameTalkScoffViewHolder(view);
+
                 break;
         }
         return holder;
@@ -86,4 +90,6 @@ public class HomeGameTalkScoffAdapter extends RecyclerView.Adapter<HomeGameTalkS
             scoffDetailAuthorTv = (TextView)itemView.findViewById(R.id.gametalk_scoff_detail_author_tv);
         }
     }
+
+
 }

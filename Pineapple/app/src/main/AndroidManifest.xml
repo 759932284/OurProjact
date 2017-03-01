@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lanou.yindongge.music.pineapple">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_pineapple"
@@ -17,6 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".detail.PlayDetailActivity" />
+        <activity android:name=".detail.PlayActivity"></activity>
     </application>
 
 </manifest>

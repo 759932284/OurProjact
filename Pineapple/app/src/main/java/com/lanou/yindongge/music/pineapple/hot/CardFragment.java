@@ -5,16 +5,22 @@ package com.lanou.yindongge.music.pineapple.hot;
  */
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 
 import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.bean.HotResponse;
 import com.lanou.yindongge.music.pineapple.hot.CardSlidePanel.CardSwitchListener;
+import com.lanou.yindongge.music.pineapple.net.GlideManager;
+import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,5 +102,4 @@ public class CardFragment extends Fragment {
             }
         }
     }
-
 }

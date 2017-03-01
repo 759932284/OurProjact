@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.base.BaseFragment;
+import com.lanou.yindongge.music.pineapple.home.gametalk.HomeGameTalkFragment;
 import com.lanou.yindongge.music.pineapple.home.recommond.HomeRecommondFragment;
 import com.lanou.yindongge.music.pineapple.util.Contant;
 
@@ -23,7 +24,8 @@ public class HomeFragment extends BaseFragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private HomeViewPagerAdapter mainAdapter;
-    private String[] title = {"推荐", "游戏杂谈", "搞笑", "动画", "萌宠", "美食", "二次元", "娱乐", "网剧", "英雄联盟", "炉石传说"};
+    private String[] title = {"推荐", "游戏杂谈", "搞笑",
+            "动画", "萌宠", "美食", "二次元", "娱乐", "网剧", "英雄联盟", "炉石传说"};
 
     @Override
     public int getLayoutId() {
@@ -47,8 +49,13 @@ public class HomeFragment extends BaseFragment {
 
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new HomeRecommondFragment());
+<<<<<<< HEAD
+        fragments.add(new HomeGameTalkFragment());
+//        fragments.add(HomeCommentFragment.newInstance(Contant.HOME_GAME_TALK, "游戏杂谈"));
+=======
         // 复用的所有碎片
         fragments.add(HomeCommentFragment.newInstance(Contant.HOME_GAME_TALK, "游戏杂谈"));
+>>>>>>> 07125a4c76d9becd3e97512718d45e28787f77f4
         fragments.add(HomeCommentFragment.newInstance(Contant.HOME_LAUGH, "搞笑"));
         fragments.add(HomeCommentFragment.newInstance(Contant.HOME_CATOON, "动画"));
         fragments.add(HomeCommentFragment.newInstance(Contant.HOME_ANIMAL, "萌宠"));

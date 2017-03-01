@@ -1,5 +1,6 @@
 package com.lanou.yindongge.music.pineapple.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.base.BaseFragment;
 import com.lanou.yindongge.music.pineapple.bean.HomeGameTalkResponse;
+import com.lanou.yindongge.music.pineapple.detail.PlayDetailActivity;
 import com.lanou.yindongge.music.pineapple.net.OkHttpManager;
 import com.lanou.yindongge.music.pineapple.net.OnNetResultListener;
 import com.lanou.yindongge.music.pineapple.util.Contant;
@@ -71,6 +73,7 @@ public class HomeCommentFragment extends BaseFragment implements OnNetResultList
             OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_NET_REQUESTCODE, this);
             OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_HERO_REQUESTCODE, this);
             OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_LEGEND_REQUESTCODE, this);
+
     }
 
     @Override

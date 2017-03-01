@@ -40,6 +40,8 @@ public class Contant {
     public static final String HOME_LEGEND = BASE_URL + "zone/categoryVideoList.htm?len=5&zoneId=14836951235151";
 
 
+    public static final String HOT_BORING = BASE_URL + "rank/sceneList.htm";
+
     // 请求码
     private static int index = 0;
     // 首页-推荐-菠萝菌力荐 请求码
@@ -81,4 +83,6 @@ public class Contant {
     // 首页-炉石传说
     public static final int HOME_LEGEND_REQUESTCODE = index++;
 
+    //
+    public static final int HOT = index++;
 }
