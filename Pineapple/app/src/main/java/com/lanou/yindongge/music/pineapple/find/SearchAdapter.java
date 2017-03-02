@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.util.ScreenSizeUtils;
+import com.lanou.yindongge.music.pineapple.util.ScreenState;
 
 import java.util.List;
 
@@ -35,6 +37,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHold
     public SearchHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(context).inflate(R.layout.item_search_search, parent, false);
         SearchHolder holder = new SearchHolder(itemView);
+//        ViewGroup.LayoutParams lp = holder.searchBtn.getLayoutParams();
+//        lp.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH);
+//        lp.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 16;
+//        holder.searchBtn.setLayoutParams(lp);
         return holder;
     }
 

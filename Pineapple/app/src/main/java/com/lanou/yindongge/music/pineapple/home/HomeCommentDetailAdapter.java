@@ -112,7 +112,6 @@ public class HomeCommentDetailAdapter extends RecyclerView.Adapter<HomeCommentDe
 //                .into(holder.commentDetailIv);
 
         ImageManagerFactory.getImageManager(ImageManagerFactory.GLIDE).loadImageView(context,
-<<<<<<< HEAD
                 dataDeatail.get(position - 1).getAvatar(), holder.commentDetailIv);
 
 
@@ -123,10 +122,9 @@ public class HomeCommentDetailAdapter extends RecyclerView.Adapter<HomeCommentDe
                 onClickCommenListener.onClickCommen(pos);
             }
         });
-=======
-                dataDeatail.get(position).getCover(), holder.commentDetailIv);
 
->>>>>>> 07125a4c76d9becd3e97512718d45e28787f77f4
+//                dataDeatail.get(position).getCover(), holder.commentDetailIv);
+
     }
 
     @Override

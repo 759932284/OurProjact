@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.net.GlideManager;
+import com.lanou.yindongge.music.pineapple.util.ScreenSizeUtils;
+import com.lanou.yindongge.music.pineapple.util.ScreenState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,10 @@ public class FunAdapter extends RecyclerView.Adapter<FunAdapter.FunImageHolder> 
     public FunImageHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(context).inflate(R.layout.item_gossip_image, null);
         FunImageHolder holder = new FunImageHolder(itemView);
+        ViewGroup.LayoutParams lp = holder.funIv.getLayoutParams();
+        lp.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH) / 4;
+        lp.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 5;
+        holder.funIv.setLayoutParams(lp);
         return holder;
     }
 

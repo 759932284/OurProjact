@@ -1,23 +1,12 @@
 package com.lanou.yindongge.music.pineapple.hot;
 
-import android.content.pm.FeatureInfo;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.StackView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.base.BaseFragment;
 import com.lanou.yindongge.music.pineapple.bean.HotResponse;
-import com.lanou.yindongge.music.pineapple.net.OkHttpManager;
-import com.lanou.yindongge.music.pineapple.net.OnNetResultListener;
-import com.lanou.yindongge.music.pineapple.util.Contant;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -26,7 +15,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 /**

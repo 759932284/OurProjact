@@ -16,6 +16,8 @@ import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.net.GlideManager;
 import com.lanou.yindongge.music.pineapple.net.OkHttpManager;
 import com.lanou.yindongge.music.pineapple.net.OnNetResultListener;
+import com.lanou.yindongge.music.pineapple.util.ScreenSizeUtils;
+import com.lanou.yindongge.music.pineapple.util.ScreenState;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -43,6 +45,10 @@ public class GossipAdapter extends RecyclerView.Adapter<GossipAdapter.GossipImag
     public GossipImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_gossip_image, null);
         GossipImageViewHolder holder = new GossipImageViewHolder(view);
+        ViewGroup.LayoutParams lp = holder.gossipIv.getLayoutParams();
+        lp.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH) / 4;
+        lp.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 5;
+        holder.gossipIv.setLayoutParams(lp);
         return holder;
     }
 
