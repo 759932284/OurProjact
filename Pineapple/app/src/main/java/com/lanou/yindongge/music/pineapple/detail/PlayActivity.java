@@ -3,8 +3,6 @@ package com.lanou.yindongge.music.pineapple.detail;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,6 +25,7 @@ public class PlayActivity extends BaseActivity implements MediaPlayer.OnInfoList
     //视频地址
     private String path;
 //            = "http://baobab.wdjcdn.com/145076769089714.mp4";
+    private String title;
     private Uri uri;
     private ProgressBar pb;
     private TextView downloadRateView, loadRateView;
@@ -57,10 +56,24 @@ public class PlayActivity extends BaseActivity implements MediaPlayer.OnInfoList
         initDatas();
     }
 
-    private void initDatas() {
+
+    private void initView() {
+        mVideoView = (VideoView) findViewById(R.id.buffer);
+        mCustomMediaController=new CustomMediaController(this,mVideoView,this);
 
         Intent intent = getIntent();
         path = intent.getStringExtra("url");
+        title = intent.getStringExtra("title");
+
+        mCustomMediaController.setVideoName(title);
+        pb = (ProgressBar) findViewById(R.id.probar);
+        downloadRateView = (TextView) findViewById(R.id.download_rate);
+        loadRateView = (TextView) findViewById(R.id.load_rate);
+    }
+
+
+    private void initDatas() {
+
 
         uri = Uri.parse(path);
         mVideoView.setVideoURI(uri);//设置视频播放地址
@@ -79,14 +92,6 @@ public class PlayActivity extends BaseActivity implements MediaPlayer.OnInfoList
         });
     }
 
-    private void initView() {
-        mVideoView = (VideoView) findViewById(R.id.buffer);
-        mCustomMediaController=new CustomMediaController(this,mVideoView,this);
-        mCustomMediaController.setVideoName("白火锅 x 红火锅");
-        pb = (ProgressBar) findViewById(R.id.probar);
-        downloadRateView = (TextView) findViewById(R.id.download_rate);
-        loadRateView = (TextView) findViewById(R.id.load_rate);
-    }
 
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
@@ -124,7 +129,7 @@ public class PlayActivity extends BaseActivity implements MediaPlayer.OnInfoList
     public void onConfigurationChanged(Configuration newConfig) {
         //屏幕切换时，设置全屏
         if (mVideoView != null){
-            mVideoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE, 0);
+            mVideoView.setVideoLayout(VideoView.VIDEO_LAYOUT_FIT_PARENT, 0);
         }
         super.onConfigurationChanged(newConfig);
     }

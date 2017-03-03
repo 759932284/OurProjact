@@ -27,10 +27,13 @@
                 style="@style/MediaController_Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:width="240dp"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/mediacontroller_top_back"
-                android:ellipsize="marquee"
                 android:singleLine="true"
                 android:text="file name" />
 
