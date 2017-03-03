@@ -41,7 +41,7 @@ public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final HomeCommentFirstViewHolder holder, int position) {
+    public void onBindViewHolder(final HomeCommentFirstViewHolder holder, final int position) {
         if (dataHomeGameTalk != null && dataHomeGameTalk.size() > 0) {
             View commentHeaderView = LayoutInflater.from(context).inflate(R.layout.item_home_header, null);
             //      HomeCommentFirstViewHolder holderFirst = (HomeCommentFirstViewHolder)holder;
@@ -62,17 +62,13 @@ public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.
             /************************ 跳转视频播放详情界面 *********************************/
             commentDetailAdapter.setOnClickCommenListener(new HomeCommentDetailAdapter.OnClickCommenListener() {
                 @Override
-                public void onClickCommen(int position) {
+                public void onClickCommen(int positionDetail) {
                     Intent intent = new Intent(context, PlayActivity.class);
-                    String url = dataHomeGameTalk.get(position).getVideoList().get(position).getLinkMp4();
+                    String url = dataHomeGameTalk.get(position).getVideoList().get(positionDetail).getLinkMp4();
                     intent.putExtra("url", url);
                     context.startActivity(intent);
-
-//                            context.startActivity(new Intent(context, PlayActivity.class));
-
                 }
             });
-
         }
     }
 
