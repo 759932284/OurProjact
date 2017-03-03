@@ -124,6 +124,7 @@ public class CustomMediaController extends MediaController {
 
         if (mFileName != null) {
             mFileName.setText(videoname);
+          //  mFileName.setHorizontallyScrolling(true); //让文字可以水平滑动
         }
         //声音控制
         mVolumeBrightnessLayout = (RelativeLayout) v.findViewById(R.id.operation_volume_brightness);
@@ -139,6 +140,7 @@ public class CustomMediaController extends MediaController {
         mIvScale.setOnClickListener(scaleListener);
         return v;
     }
+
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {

@@ -1,7 +1,9 @@
 package com.lanou.yindongge.music.pineapple.home;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,7 +14,6 @@ import com.google.gson.reflect.TypeToken;
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.base.BaseFragment;
 import com.lanou.yindongge.music.pineapple.bean.HomeGameTalkResponse;
-import com.lanou.yindongge.music.pineapple.detail.PlayDetailActivity;
 import com.lanou.yindongge.music.pineapple.net.OkHttpManager;
 import com.lanou.yindongge.music.pineapple.net.OnNetResultListener;
 import com.lanou.yindongge.music.pineapple.util.Contant;
@@ -30,7 +31,8 @@ public class HomeCommentFragment extends BaseFragment implements OnNetResultList
     private String channel;
     private RecyclerView commentRv;
     private HomeCommentAdapter homeCommentAdapter;
-
+    private SwipeRefreshLayout refresh;
+    private int REFRESH = 1;
     @Override
     public int getLayoutId() {
         return R.layout.fragment_home_comment;
@@ -49,6 +51,7 @@ public class HomeCommentFragment extends BaseFragment implements OnNetResultList
     @Override
     public void initView(View view) {
         commentRv = (RecyclerView)view.findViewById(R.id.comment_rv);
+        refresh = (SwipeRefreshLayout)view.findViewById(R.id.comment_refresh);
     }
 
     @Override
@@ -74,7 +77,26 @@ public class HomeCommentFragment extends BaseFragment implements OnNetResultList
             OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_HERO_REQUESTCODE, this);
             OkHttpManager.getInstance().startGetRequest(url, Contant.HOME_LEGEND_REQUESTCODE, this);
 
+        // 下拉刷新
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                handler.sendEmptyMessageDelayed(REFRESH, 2000);
+            }
+        });
     }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == REFRESH) {
+                initData();
+                homeCommentAdapter.notifyDataSetChanged();
+                refresh.setRefreshing(false);
+            }
+        }
+    };
 
     @Override
     public void onSuccessListener(String result, int requestCode) {
