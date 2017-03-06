@@ -6,7 +6,9 @@ package com.lanou.yindongge.music.pineapple.hot;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,12 +17,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lanou.yindongge.music.pineapple.R;
 import com.lanou.yindongge.music.pineapple.bean.HotResponse;
+import com.lanou.yindongge.music.pineapple.detail.PlayActivity;
 import com.lanou.yindongge.music.pineapple.hot.CardSlidePanel.CardSwitchListener;
 import com.lanou.yindongge.music.pineapple.net.GlideManager;
 import com.lanou.yindongge.music.pineapple.net.ImageManagerFactory;
+import com.lanou.yindongge.music.pineapple.net.OkHttpManager;
+import com.lanou.yindongge.music.pineapple.net.OnNetResultListener;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +39,11 @@ import java.util.List;
  */
 @SuppressLint({"HandlerLeak", "NewApi", "InflateParams"})
 public class CardFragment extends Fragment {
+
+    String videoUrl = "";
+    String imgUrl = "";
+
+
 
     private CardSwitchListener cardSwitchListener;
 
@@ -60,7 +73,9 @@ public class CardFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.card_layout, null);
         initView(rootView);
         return rootView;
+
     }
+
 
     private void initView(View rootView) {
         CardSlidePanel slidePanel = (CardSlidePanel) rootView
@@ -80,6 +95,15 @@ public class CardFragment extends Fragment {
             @Override
             public void onItemClick(View cardView, int index) {
                 Log.d("CardFragment", "卡片点击-" + dataList.get(index).userName);
+                cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), PlayActivity.class);
+                        intent.putExtra("url", videoUrl);
+                        Log.d("asd", "123:" + 123);
+                        getContext().startActivity(intent);
+                    }
+                });
             }
         };
         slidePanel.setCardSwitchListener(cardSwitchListener);
@@ -89,6 +113,7 @@ public class CardFragment extends Fragment {
     }
 
     private void prepareDataList() {
+
         int num = imagePaths.length;
 
         for (int j = 0; j < 3; j++) {
@@ -101,5 +126,60 @@ public class CardFragment extends Fragment {
                 dataList.add(dataItem);
             }
         }
+
+/*************   加加++++++++++    ************/
+        String url = "http://m.live.netease.com/bolo/api/rank/hotVideo.htm?type=LUNCKBREAK&userId=5702015542626208498";
+        int requestCode = 0;
+        OkHttpManager.getInstance().startGetRequest(url, 0, new OnNetResultListener() {
+            @Override
+            public void onSuccessListener(String result, int requestCode) {
+                Gson gson = new Gson();
+                List<FoodBean> foodData;
+                Type type = new TypeToken<List<FoodBean>>() {}.getType();
+                foodData = gson.fromJson(result, type);
+
+                for (int i = 0; i < foodData.size(); i++) {
+                    videoUrl = foodData.get(i).getLinkMp4();
+                    imgUrl = foodData.get(i).getCover();
+                }
+//                GlideManager.getGlideManager().loadImageView();
+//                Intent intent = new Intent(getContext(), PlayActivity.class);
+//                intent.putExtra("url", videoUrl);
+//                intent.putExtra("imgUrl", imgUrl);
+//                startActivity(intent);
+            }
+
+            @Override
+            public void onFailureListener(String errMsg) {
+
+            }
+        });
+
+
+//    @Override
+//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//        String url = "http://m.live.netease.com/bolo/api/rank/hotVideo.htm?type=LUNCKBREAK&userId=5702015542626208498";
+//        int requestCode = 0;
+//        OkHttpManager.getInstance().startGetRequest(url, 0, new OnNetResultListener() {
+//            @Override
+//            public void onSuccessListener(String result, int requestCode) {
+//                Gson gson = new Gson();
+//                List<FoodBean> foodData;
+//                Type type = new TypeToken<List<FoodBean>>(){}.getType();
+//                foodData = gson.fromJson(result, type);
+//                FoodBean fb = new FoodBean();
+//                fb = foodData.get(0);
+//                Log.d("CardFragment", fb.getLinkMp4());
+//            }
+//
+//            @Override
+//            public void onFailureListener(String errMsg) {
+//
+//            }
+//        });
+//
+//    }
     }
 }

@@ -2,7 +2,9 @@ package com.lanou.yindongge.music.pineapple.hot;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -12,8 +14,17 @@ import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringConfig;
 import com.facebook.rebound.SpringSystem;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.detail.PlayActivity;
+import com.lanou.yindongge.music.pineapple.net.GlideManager;
+import com.lanou.yindongge.music.pineapple.net.OkHttpManager;
+import com.lanou.yindongge.music.pineapple.net.OnNetResultListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * Created by dllo on 17/2/25.
@@ -26,6 +37,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  */
 @SuppressLint("NewApi")
 public class CardItemView extends FrameLayout {
+
+    String videoUrl = "";
+
+
+
     private Spring springX, springY;
     public ImageView imageView;
     public View maskView;
@@ -79,13 +95,53 @@ public class CardItemView extends FrameLayout {
                 parentView.onViewPosChanged(CardItemView.this);
             }
         });
+
+
     }
 
-    public void fillData(CardDataItem itemData) {
-        ImageLoader.getInstance().displayImage(itemData.imagePath, imageView);
+    public void fillData(final CardDataItem itemData) {
+//        ImageLoader.getInstance().displayImage(itemData.imagePath, imageView);
         userNameTv.setText(itemData.userName);
         imageNumTv.setText(itemData.imageNum + "");
         likeNumTv.setText(itemData.likeNum + "");
+
+        /***************   后加的+++  **********************/
+
+//        String imgUrl = "http://bobo-public.nosdn.127.net/bobo_1487388170363_54933000.jpg";
+//        GlideManager.getGlideManager().loadImageView(getContext(), imgUrl, imageView);
+
+        String url = "http://m.live.netease.com/bolo/api/rank/hotVideo.htm?type=LUNCKBREAK&userId=5702015542626208498";
+        int requestCode = 0;
+        OkHttpManager.getInstance().startGetRequest(url, 0, new OnNetResultListener() {
+            @Override
+            public void onSuccessListener(String result, int requestCode) {
+                Gson gson = new Gson();
+                List<FoodBean> foodData;
+                Type type = new TypeToken<List<FoodBean>>() {}.getType();
+                foodData = gson.fromJson(result, type);
+                Log.d("CardItemView", "foodData.size():" + foodData.size());
+
+                String imgUrl = "";
+                for (int i = 0; i < foodData.size(); i++) {
+                    videoUrl = foodData.get(i).getLinkMp4();
+                    imgUrl = foodData.get(1).getCover();
+                    ImageLoader.getInstance().displayImage(imgUrl, imageView);
+//                    GlideManager.getGlideManager().loadImageView(getContext(), imgUrl, imageView);
+
+                }
+//                Intent intent = new Intent(getContext(), PlayActivity.class);
+//                intent.putExtra("url", videoUrl);
+////                intent.putExtra("imgUrl", imgUrl);
+//                startActivity(intent);
+            }
+
+            @Override
+            public void onFailureListener(String errMsg) {
+
+            }
+        });
+
+
     }
 
 

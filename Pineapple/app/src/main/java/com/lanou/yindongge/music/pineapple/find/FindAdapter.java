@@ -1,6 +1,7 @@
 package com.lanou.yindongge.music.pineapple.find;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.lanou.yindongge.music.pineapple.R;
+import com.lanou.yindongge.music.pineapple.detail.PlayActivity;
 
 import java.util.List;
 
@@ -112,6 +114,13 @@ public class FindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 gossipHolder.gossipRv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
                 gossipHolder.gossipRv.setAdapter(gossipAdapter);
                 gossipAdapter.setGossipData(gossip);
+//                gossipAdapter.setOnGossipClickListener(new GossipAdapter.OnGossipClickListener() {
+//                    @Override
+//                    public void onGossipClick(int position) {
+//                        context.startActivity(new Intent(context, PlayActivity.class));
+//                        String url = gossip.get(position).getVideoId()
+//                    }
+//                });
                 break;
             case FUN:
                 FunAdapter funAdapter = new FunAdapter(context);

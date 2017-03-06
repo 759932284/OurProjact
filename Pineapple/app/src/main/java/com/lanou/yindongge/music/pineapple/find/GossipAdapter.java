@@ -32,6 +32,13 @@ public class GossipAdapter extends RecyclerView.Adapter<GossipAdapter.GossipImag
 
     private List<ZoneListBean.VideoSetListBean> gossipData;
 
+//    private OnGossipClickListener onGossipClickListener;
+//
+//    public void setOnGossipClickListener(OnGossipClickListener onGossipClickListener) {
+//        this.onGossipClickListener = onGossipClickListener;
+//        notifyDataSetChanged();
+//    }
+
     public GossipAdapter(Context context) {
         this.context = context;
     }
@@ -44,11 +51,20 @@ public class GossipAdapter extends RecyclerView.Adapter<GossipAdapter.GossipImag
     @Override
     public GossipImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_gossip_image, null);
-        GossipImageViewHolder holder = new GossipImageViewHolder(view);
+        final GossipImageViewHolder holder = new GossipImageViewHolder(view);
         ViewGroup.LayoutParams lp = holder.gossipIv.getLayoutParams();
         lp.width = ScreenSizeUtils.getSreen(context, ScreenState.WIDTH) / 4;
         lp.height = ScreenSizeUtils.getSreen(context, ScreenState.HEIGHT) / 5;
         holder.gossipIv.setLayoutParams(lp);
+
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int pos = holder.getLayoutPosition();
+//                onGossipClickListener.onGossipClick(pos);
+//            }
+//        });
+
         return holder;
     }
 
@@ -73,5 +89,8 @@ public class GossipAdapter extends RecyclerView.Adapter<GossipAdapter.GossipImag
         }
     }
 
+//interface OnGossipClickListener {
+//    void onGossipClick(int position);
+//}
 
 }

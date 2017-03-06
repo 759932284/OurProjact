@@ -7,6 +7,19 @@
     android:paddingRight="5dp"
     xmlns:card="http://schemas.android.com/apk/res-auto">
 
+    <!--<io.vov.vitamio.widget.CenterLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<io.vov.vitamio.widget.VideoView-->
+            <!--android:id="@+id/buffer"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_centerVertical="true" />-->
+    <!--</io.vov.vitamio.widget.CenterLayout>-->
+
     <com.lanou.yindongge.music.pineapple.hot.AutoScaleRelativeLayout
         android:id="@+id/card_top_layout"
         android:layout_width="match_parent"
