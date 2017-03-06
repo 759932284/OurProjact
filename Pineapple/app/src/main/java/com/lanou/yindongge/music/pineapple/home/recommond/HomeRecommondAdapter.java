@@ -45,6 +45,7 @@ public class HomeRecommondAdapter extends RecyclerView.Adapter implements OnNetR
     private HomeRecommondAlbumViewHolder holderAlbum;
     private HomeRecommondRecommondAdapter recommondAdapter;
     private RotateAdapter rotateAdapter;
+
     public HomeRecommondAdapter(Context context) {
         this.context = context;
     }
